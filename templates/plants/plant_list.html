@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Plants | LeafLore Nexus</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+        body {
+            font-family: system-ui, -apple-system, BlinkMacSystemFont;
+            margin: 0;
+            padding: 1rem;
+        }
+        .plant {
+            margin-bottom: 2rem;
+            border-bottom: 1px solid #ddd;
+            padding-bottom: 1rem;
+        }
+        img {
+            width: 100%;
+            max-height: 220px;
+            object-fit: cover;
+            border-radius: 6px;
+        }
+        .scientific {
+            color: #666;
+            font-style: italic;
+        }
+    </style>
+</head>
+<body>
+
+<h1>🌿 Plant Knowledge Base</h1>
+<p>
+  A growing knowledge base of plants — covering care, growth,
+  uses, and cultivation insights.
+</p>
+{% for plant in plants %}
+  <div class="plant">
+    {% if plant.primary_image %}
+      <img src="{{ plant.primary_image.url }}" alt="{{ plant.common_name }}">
+    {% endif %}
+
+    <h2>
+      <a href="{% url 'plant-detail' plant.slug %}">
+        {{ plant.common_name }}
+      </a>
+    </h2>
+
+    <div class="scientific">{{ plant.scientific_name }}</div>
+
+    <p>{{ plant.description|truncatewords:30 }}</p>
+  </div>
+{% empty %}
+  <p><strong>No published plants available.</strong></p>
+{% endfor %}
+
+</body>
+</html>

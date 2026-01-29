@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>{{ plant.common_name }} | LeafLore Nexus</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <style>
+        body {
+            font-family: system-ui, -apple-system, BlinkMacSystemFont;
+            margin: 0;
+            padding: 1rem;
+            line-height: 1.6;
+            color: #222;
+        }
+
+        a {
+            text-decoration: none;
+            color: #2c7a7b;
+        }
+
+        img {
+            width: 100%;
+            max-height: 320px;
+            object-fit: cover;
+            border-radius: 8px;
+            margin: 1rem 0;
+        }
+
+        .meta {
+            color: #555;
+            font-size: 0.9rem;
+            margin-bottom: 1rem;
+        }
+
+        section {
+            margin-top: 2rem;
+        }
+
+        section h2 {
+            border-bottom: 1px solid #eee;
+            padding-bottom: 0.3rem;
+            margin-bottom: 0.75rem;
+        }
+
+        ul {
+            padding-left: 1.2rem;
+        }
+
+        .placeholder {
+            color: #888;
+            font-style: italic;
+            background: #f7f7f7;
+            padding: 0.75rem;
+            border-left: 4px solid #ccc;
+        }
+    </style>
+</head>
+<body>
+
+<a href="/plants/">← Back to plants</a>
+
+<h1>{{ plant.common_name }}</h1>
+
+<div class="meta">
+    <em>{{ plant.scientific_name }}</em><br>
+    {% if plant.family %}Family: {{ plant.family }} · {% endif %}
+    {% if plant.genus %}Genus: {{ plant.genus }}{% endif %}
+</div>
+
+{% if plant.primary_image %}
+    <img src="{{ plant.primary_image.url }}" alt="{{ plant.common_name }}">
+{% endif %}
+
+<!-- ========================= -->
+<!-- OVERVIEW -->
+<!-- ========================= -->
+<section>
+    <h2>Overview</h2>
+    <p>{{ plant.description }}</p>
+</section>
+
+<!-- ========================= -->
+<!-- CARE & CULTIVATION -->
+<!-- ========================= -->
+<section>
+    <h2>Care & Cultivation</h2>
+
+    {% if plant.growth_conditions %}
+        <p>{{ plant.growth_conditions }}</p>
+    {% else %}
+        <p class="placeholder">
+            Care and cultivation details will be added soon.
+        </p>
+    {% endif %}
+</section>
+
+<!-- ========================= -->
+<!-- GROWTH & HABIT -->
+<!-- ========================= -->
+<section>
+    <h2>Growth & Habit</h2>
+
+    {% if plant.plant_type or plant.lifecycle or plant.growth_habit or plant.origin_region %}
+        <ul>
+            {% if plant.plant_type %}
+                <li><strong>Plant type:</strong> {{ plant.plant_type|title }}</li>
+            {% endif %}
+
+            {% if plant.lifecycle %}
+                <li><strong>Lifecycle:</strong> {{ plant.lifecycle|title }}</li>
+            {% endif %}
+
+            {% if plant.growth_habit %}
+                <li><strong>Growth habit:</strong> {{ plant.growth_habit }}</li>
+            {% endif %}
+
+            {% if plant.origin_region %}
+                <li><strong>Native region:</strong> {{ plant.origin_region }}</li>
+            {% endif %}
+        </ul>
+    {% else %}
+        <p class="placeholder">
+            Growth characteristics will be documented soon.
+        </p>
+    {% endif %}
+</section>
+
+<!-- ========================= -->
+<!-- USES & VALUE -->
+<!-- ========================= -->
+<section>
+    <h2>Uses & Value</h2>
+
+    {% if plant.medicinal_uses %}
+        <p>{{ plant.medicinal_uses }}</p>
+    {% else %}
+        <p class="placeholder">
+            Uses and cultural significance will be added soon.
+        </p>
+    {% endif %}
+</section>
+
+<!-- ========================= -->
+<!-- HEALTH & PROBLEMS -->
+<!-- ========================= -->
+<section>
+    <h2>Health & Common Problems</h2>
+    <p class="placeholder">
+        Pest, disease, and deficiency information will be available in future updates.
+    </p>
+</section>
+
+<!-- ========================= -->
+<!-- AI / SMART ASSISTANT -->
+<!-- ========================= -->
+<section>
+    <h2>Smart Care Assistant</h2>
+    <p class="placeholder">
+        AI-powered care tips, diagnostics, and reminders will appear here.
+    </p>
+</section>
+
+</body>
+</html>
