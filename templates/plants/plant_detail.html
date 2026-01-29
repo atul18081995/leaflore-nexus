@@ -3,17 +3,9 @@
 <head>
     <meta charset="UTF-8">
     <title>{{ plant.common_name }} | LeafLore Nexus</title>
-    <meta name="description" content="{{ plant.common_name }} ({{ plant.scientific_name }}) — plant care, growth habits, uses, and cultivation information.">
-
-    <meta property="og:title" content="{{ plant.common_name }} | LeafLore Nexus">
-    <meta property="og:description" content="{{ plant.description|truncatewords:25 }}">
-    <meta property="og:type" content="article">
-    <meta property="og:url" content="{{ request.build_absolute_uri }}">
-
-    {% if plant.primary_image %}
-    <meta property="og:image" content="{{ plant.primary_image.url }}">
-    {% endif %}
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <meta name="description" content="{{ plant.common_name }} ({{ plant.scientific_name }}) — botanical details, care, uses, and climate-specific guidance.">
     <link rel="canonical" href="{{ request.build_absolute_uri }}">
 
     <style>
@@ -23,154 +15,240 @@
             padding: 1rem;
             line-height: 1.6;
             color: #222;
+            background: #fafafa;
         }
-
-        a {
-            text-decoration: none;
-            color: #2c7a7b;
-        }
-
-        img {
-            width: 100%;
-            max-height: 320px;
-            object-fit: cover;
-            border-radius: 8px;
-            margin: 1rem 0;
-        }
-
-        .meta {
-            color: #555;
-            font-size: 0.9rem;
-            margin-bottom: 1rem;
-        }
-
-        section {
+        a { color: #2c7a7b; text-decoration: none; }
+        a:hover { text-decoration: underline; }
+        h1 { margin-bottom: 0.25rem; }
+        h2 {
             margin-top: 2rem;
-        }
-
-        section h2 {
-            border-bottom: 1px solid #eee;
+            border-bottom: 1px solid #ddd;
             padding-bottom: 0.3rem;
-            margin-bottom: 0.75rem;
         }
+        h3 { margin-top: 1.2rem; color: #2c7a7b; }
+        .meta { color: #555; font-size: 0.9rem; }
 
-        ul {
-            padding-left: 1.2rem;
+        .primary-image {
+            width: 100%;
+            height: 340px;
+            border-radius: 12px;
+            overflow: hidden;
+            background: #eaeaea;
+            margin: 1rem 0 0.75rem;
+            cursor: pointer;
+        }
+        .primary-image img { width: 100%; height: 100%; object-fit: cover; }
+
+        .gallery {
+            display: flex;
+            gap: 0.6rem;
+            overflow-x: auto;
+            margin-bottom: 1.5rem;
+        }
+        .gallery-image {
+            width: 96px;
+            height: 96px;
+            flex-shrink: 0;
+            border-radius: 8px;
+            overflow: hidden;
+            background: #f0f0f0;
+            cursor: pointer;
+            border: 1px solid #ddd;
+        }
+        .gallery-image img { width: 100%; height: 100%; object-fit: cover; }
+
+        .care-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 1rem;
+            margin-top: 1rem;
+        }
+        .care-item {
+            background: #fff;
+            padding: 0.75rem;
+            border-radius: 8px;
+            border: 1px solid #eee;
+        }
+        .care-item strong { display: block; color: #444; margin-bottom: 0.25rem; }
+
+        .climate-block {
+            background: #f7f7f7;
+            border-left: 4px solid #2c7a7b;
+            padding: 0.75rem;
+            margin-top: 0.75rem;
+            border-radius: 6px;
         }
 
         .placeholder {
-            color: #888;
+            color: #777;
             font-style: italic;
-            background: #f7f7f7;
+            background: #f3f3f3;
             padding: 0.75rem;
             border-left: 4px solid #ccc;
+            border-radius: 6px;
+        }
+
+        .lightbox {
+            position: fixed;
+            inset: 0;
+            background: rgba(0,0,0,0.85);
+            display: none;
+            align-items: center;
+            justify-content: center;
+            z-index: 999;
+        }
+        .lightbox.active { display: flex; }
+        .lightbox img { max-width: 90%; max-height: 90%; border-radius: 10px; }
+        .lightbox-close {
+            position: absolute;
+            top: 1rem;
+            right: 1rem;
+            color: #fff;
+            font-size: 2rem;
+            cursor: pointer;
         }
     </style>
 </head>
+
 <body>
 
 <a href="/plants/">← Back to plants</a>
 
 <h1>{{ plant.common_name }}</h1>
+<div class="meta"><em>{{ plant.scientific_name }}</em></div>
 
-<div class="meta">
-    <em>{{ plant.scientific_name }}</em><br>
-    {% if plant.family %}Family: {{ plant.family }} · {% endif %}
-    {% if plant.genus %}Genus: {{ plant.genus }}{% endif %}
+<!-- PRIMARY IMAGE -->
+{% for img in plant.images.all %}
+    {% if img.is_primary %}
+        <div class="primary-image" onclick="openLightbox('{{ img.image.url }}')">
+            <img src="{{ img.image.url }}" alt="{{ img.caption|default:plant.common_name }}">
+        </div>
+    {% endif %}
+{% endfor %}
+
+<!-- GALLERY -->
+{% if plant.images.all|length > 1 %}
+<div class="gallery">
+    {% for img in plant.images.all %}
+        <div class="gallery-image" onclick="openLightbox('{{ img.image.url }}')">
+            <img src="{{ img.image.url }}" alt="{{ img.caption|default:plant.common_name }}">
+        </div>
+    {% endfor %}
 </div>
-
-{% if plant.primary_image %}
-    <img src="{{ plant.primary_image.url }}" alt="{{ plant.common_name }}">
 {% endif %}
 
-<!-- ========================= -->
 <!-- OVERVIEW -->
-<!-- ========================= -->
-<section>
-    <h2>Overview</h2>
-    <p>{{ plant.description }}</p>
-</section>
+<h2>Overview</h2>
+<p>{{ plant.description }}</p>
 
-<!-- ========================= -->
-<!-- CARE & CULTIVATION -->
-<!-- ========================= -->
-<section>
-    <h2>Care & Cultivation</h2>
+<!-- BOTANICAL DETAILS -->
+<h2>Botanical Profile</h2>
+<ul>
+    <li><strong>Family:</strong> {{ plant.family }}</li>
+    <li><strong>Genus:</strong> {{ plant.genus }}</li>
+    {% if plant.species %}<li><strong>Species:</strong> {{ plant.species }}</li>{% endif %}
+    {% if plant.plant_type %}<li><strong>Plant Type:</strong> {{ plant.get_plant_type_display }}</li>{% endif %}
+    {% if plant.lifecycle %}<li><strong>Life Cycle:</strong> {{ plant.get_lifecycle_display }}</li>{% endif %}
+    {% if plant.growth_habit %}<li><strong>Growth Habit:</strong> {{ plant.growth_habit }}</li>{% endif %}
+    {% if plant.origin_region %}<li><strong>Origin:</strong> {{ plant.origin_region }}</li>{% endif %}
+</ul>
 
-    {% if plant.growth_conditions %}
-        <p>{{ plant.growth_conditions }}</p>
-    {% else %}
-        <p class="placeholder">
-            Care and cultivation details will be added soon.
-        </p>
+<!-- MORPHOLOGY -->
+{% if plant.leaf_description or plant.flower_description or plant.fruit_description %}
+<h2>Morphology</h2>
+{% if plant.leaf_description %}<p><strong>Leaves:</strong> {{ plant.leaf_description }}</p>{% endif %}
+{% if plant.flower_description %}<p><strong>Flowers:</strong> {{ plant.flower_description }}</p>{% endif %}
+{% if plant.fruit_description %}<p><strong>Fruits:</strong> {{ plant.fruit_description }}</p>{% endif %}
+{% endif %}
+
+<!-- USES -->
+{% if plant.medicinal_uses or plant.agricultural_uses or plant.cultural_significance %}
+<h2>Uses & Importance</h2>
+{% if plant.medicinal_uses %}<p><strong>Medicinal:</strong> {{ plant.medicinal_uses }}</p>{% endif %}
+{% if plant.agricultural_uses %}<p><strong>Agricultural:</strong> {{ plant.agricultural_uses }}</p>{% endif %}
+{% if plant.cultural_significance %}<p><strong>Cultural:</strong> {{ plant.cultural_significance }}</p>{% endif %}
+{% endif %}
+
+<!-- CARE -->
+<h2>Care & Cultivation</h2>
+{% if plant.care %}
+<div class="care-grid">
+    <div class="care-item"><strong>Light</strong>{{ plant.care.light_requirement }}</div>
+    <div class="care-item"><strong>Watering</strong>{{ plant.care.watering_frequency }}</div>
+    <div class="care-item"><strong>Soil</strong>{{ plant.care.soil_type }}</div>
+    <div class="care-item"><strong>Temperature</strong>{{ plant.care.temperature_range }}</div>
+
+    <!-- ✅ FIXED PLACEMENT -->
+    <div class="care-item">
+        <strong>Placement</strong>
+        {{ plant.care.get_indoor_outdoor_display }} ·
+        {{ plant.care.get_pot_or_ground_display }}
+    </div>
+
+    {% if plant.care.growth_speed %}
+        <div class="care-item"><strong>Growth Speed</strong>{{ plant.care.growth_speed }}</div>
     {% endif %}
-</section>
 
-<!-- ========================= -->
-<!-- GROWTH & HABIT -->
-<!-- ========================= -->
-<section>
-    <h2>Growth & Habit</h2>
-
-    {% if plant.plant_type or plant.lifecycle or plant.growth_habit or plant.origin_region %}
-        <ul>
-            {% if plant.plant_type %}
-                <li><strong>Plant type:</strong> {{ plant.plant_type|title }}</li>
-            {% endif %}
-
-            {% if plant.lifecycle %}
-                <li><strong>Lifecycle:</strong> {{ plant.lifecycle|title }}</li>
-            {% endif %}
-
-            {% if plant.growth_habit %}
-                <li><strong>Growth habit:</strong> {{ plant.growth_habit }}</li>
-            {% endif %}
-
-            {% if plant.origin_region %}
-                <li><strong>Native region:</strong> {{ plant.origin_region }}</li>
-            {% endif %}
-        </ul>
-    {% else %}
-        <p class="placeholder">
-            Growth characteristics will be documented soon.
-        </p>
+    <!-- ✅ ADDED EXPECTED HEIGHT -->
+    {% if plant.care.expected_height %}
+        <div class="care-item"><strong>Expected Height</strong>{{ plant.care.expected_height }}</div>
     {% endif %}
-</section>
+</div>
 
-<!-- ========================= -->
-<!-- USES & VALUE -->
-<!-- ========================= -->
-<section>
-    <h2>Uses & Value</h2>
+{% if plant.care.beginner_mistakes %}
+<h3>Common Beginner Mistakes</h3>
+<p>{{ plant.care.beginner_mistakes }}</p>
+{% endif %}
 
-    {% if plant.medicinal_uses %}
-        <p>{{ plant.medicinal_uses }}</p>
-    {% else %}
-        <p class="placeholder">
-            Uses and cultural significance will be added soon.
-        </p>
-    {% endif %}
-</section>
+{% if plant.care.toxicity_notes %}
+<h3>⚠️ Toxicity</h3>
+<p>{{ plant.care.toxicity_notes }}</p>
+{% endif %}
+{% else %}
+<p class="placeholder">Care information will be added soon.</p>
+{% endif %}
 
-<!-- ========================= -->
-<!-- HEALTH & PROBLEMS -->
-<!-- ========================= -->
-<section>
-    <h2>Health & Common Problems</h2>
-    <p class="placeholder">
-        Pest, disease, and deficiency information will be available in future updates.
-    </p>
-</section>
+<!-- CLIMATE -->
+<h2>Climate & Seasonal Adjustments</h2>
+{% if plant.care and plant.care.climate_overrides.all %}
+    {% for rule in plant.care.climate_overrides.all %}
+        <div class="climate-block">
+            <strong>{{ rule.get_climate_zone_display }} · {{ rule.get_season_display }}</strong>
+            <p><strong>Watering:</strong> {{ rule.watering_adjustment }}</p>
+            {% if rule.sunlight_adjustment %}
+                <p><strong>Sunlight:</strong> {{ rule.sunlight_adjustment }}</p>
+            {% endif %}
+            {% if rule.special_notes %}
+                <p>{{ rule.special_notes }}</p>
+            {% endif %}
+        </div>
+    {% endfor %}
+{% else %}
+<p class="placeholder">Climate-specific guidance will be added soon.</p>
+{% endif %}
 
-<!-- ========================= -->
-<!-- AI / SMART ASSISTANT -->
-<!-- ========================= -->
-<section>
-    <h2>Smart Care Assistant</h2>
-    <p class="placeholder">
-        AI-powered care tips, diagnostics, and reminders will appear here.
-    </p>
-</section>
+<!-- SAFETY -->
+{% if plant.toxicity or plant.precautions %}
+<h2>Safety & Precautions</h2>
+{% if plant.toxicity %}<p><strong>Toxicity:</strong> {{ plant.toxicity }}</p>{% endif %}
+{% if plant.precautions %}<p><strong>Precautions:</strong> {{ plant.precautions }}</p>{% endif %}
+{% endif %}
+
+<!-- LIGHTBOX -->
+<div class="lightbox" id="lightbox" onclick="closeLightbox()">
+    <span class="lightbox-close">&times;</span>
+    <img id="lightbox-img" src="" alt="">
+</div>
+
+<script>
+function openLightbox(src) {
+    document.getElementById("lightbox-img").src = src;
+    document.getElementById("lightbox").classList.add("active");
+}
+function closeLightbox() {
+    document.getElementById("lightbox").classList.remove("active");
+}
+</script>
 
 </body>
 </html>

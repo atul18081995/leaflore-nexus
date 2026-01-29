@@ -15,6 +15,7 @@
             padding: 1rem;
             color: #222;
             line-height: 1.6;
+            background: #fafafa;
         }
 
         h1 {
@@ -39,8 +40,8 @@
         }
 
         .clear-search {
-            margin-top: 0.4rem;
             display: inline-block;
+            margin-top: 0.4rem;
             font-size: 0.9rem;
             color: #2c7a7b;
             text-decoration: none;
@@ -50,14 +51,44 @@
             text-decoration: underline;
         }
 
+        /* CARD */
         .plant {
-            margin-bottom: 2rem;
-            padding-bottom: 1rem;
-            border-bottom: 1px solid #eee;
+            display: flex;
+            gap: 1rem;
+            background: #fff;
+            border: 1px solid #eee;
+            border-radius: 10px;
+            padding: 0.75rem;
+            margin-bottom: 1rem;
+            box-shadow: 0 1px 2px rgba(0,0,0,0.04);
+            align-items: flex-start;
+        }
+
+        /* THUMBNAIL */
+        .plant-image {
+            width: 120px;
+            height: 120px;
+            flex-shrink: 0;
+            border-radius: 8px;
+            overflow: hidden;
+            background: #f0f0f0;
+        }
+
+        .plant-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: block;
+        }
+
+        /* CONTENT */
+        .plant-content {
+            flex: 1;
         }
 
         .plant h2 {
-            margin-bottom: 0.25rem;
+            margin: 0;
+            font-size: 1.2rem;
         }
 
         .plant h2 a {
@@ -69,24 +100,34 @@
             text-decoration: underline;
         }
 
-        img {
-            width: 100%;
-            max-height: 220px;
-            object-fit: cover;
-            border-radius: 6px;
-            margin-bottom: 0.5rem;
-        }
-
         .scientific {
             color: #666;
             font-style: italic;
             font-size: 0.9rem;
+            margin-top: 0.15rem;
+        }
+
+        .description {
+            margin-top: 0.4rem;
+            font-size: 0.95rem;
+            color: #333;
         }
 
         .no-results {
             margin-top: 2rem;
             color: #b00020;
             font-style: italic;
+        }
+
+        /* MOBILE TWEAK */
+        @media (max-width: 600px) {
+            .plant {
+                flex-direction: column;
+            }
+            .plant-image {
+                width: 100%;
+                height: 160px;
+            }
         }
     </style>
 </head>
@@ -119,22 +160,26 @@
         <div class="plant">
 
             {% if plant.primary_image %}
-                <img src="{{ plant.primary_image.url }}" alt="{{ plant.common_name }}">
+                <div class="plant-image">
+                    <img src="{{ plant.primary_image.url }}" alt="{{ plant.common_name }}">
+                </div>
             {% endif %}
 
-            <h2>
-                <a href="{% url 'plant-detail' plant.slug %}">
-                    {{ plant.common_name }}
-                </a>
-            </h2>
+            <div class="plant-content">
+                <h2>
+                    <a href="{% url 'plant-detail' plant.slug %}">
+                        {{ plant.common_name }}
+                    </a>
+                </h2>
 
-            <div class="scientific">
-                {{ plant.scientific_name }}
+                <div class="scientific">
+                    {{ plant.scientific_name }}
+                </div>
+
+                <div class="description">
+                    {{ plant.description|truncatewords:20 }}
+                </div>
             </div>
-
-            <p>
-                {{ plant.description|truncatewords:20 }}
-            </p>
 
         </div>
     {% endfor %}
