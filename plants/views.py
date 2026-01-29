@@ -1,28 +1,55 @@
+from django.shortcuts import render, get_object_or_404
 from rest_framework.generics import ListAPIView
-from rest_framework.filters import SearchFilter, OrderingFilter
+from django.db.models import Q
 from .models import Plant
 from .serializers import PlantSerializer
 
+
+# --------------------
+# API views
+# --------------------
 
 class PlantListAPIView(ListAPIView):
     queryset = Plant.objects.filter(is_published=True)
     serializer_class = PlantSerializer
 
-    filter_backends = [SearchFilter, OrderingFilter]
 
-    search_fields = [
-        "common_name",
-        "scientific_name",
-        "family",
-        "genus",
-        "medicinal_uses",
-    ]
+# --------------------
+# Web views (public)
+# --------------------
 
-    ordering_fields = [
-        "common_name",
-        "scientific_name",
-        "family",
-        "created_at",
-    ]
+from django.db.models import Q
 
-    ordering = ["common_name"]
+def plant_list_view(request):
+    query = request.GET.get("q", "").strip()
+
+    plants = Plant.objects.filter(is_published=True)
+
+    if query:
+        plants = plants.filter(
+            Q(common_name__icontains=query)
+            | Q(scientific_name__icontains=query)
+            | Q(family__icontains=query)
+            | Q(genus__icontains=query)
+        )
+
+    return render(
+        request,
+        "plants/plant_list.html",
+        {
+            "plants": plants,
+            "query": query,
+        },
+    )
+
+def plant_detail_view(request, slug):
+    plant = get_object_or_404(
+        Plant,
+        slug=slug,
+        is_published=True,
+    )
+    return render(
+        request,
+        "plants/plant_detail.html",
+        {"plant": plant},
+    )

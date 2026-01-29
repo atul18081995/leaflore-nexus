@@ -1,5 +1,5 @@
 from django.db import models
-
+from django.utils.text import slugify
 
 class Plant(models.Model):
     common_name = models.CharField(
@@ -10,7 +10,11 @@ class Plant(models.Model):
         max_length=200,
         unique=True
     )
-
+    slug = models.SlugField(
+        max_length=220,
+        unique=True,
+        help_text="URL-friendly unique identifier"
+    )
     family = models.CharField(
         max_length=100,
         db_index=True
@@ -72,6 +76,11 @@ class Plant(models.Model):
 
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
+
+    def save(self, *args, **kwargs):
+        if not self.slug:
+            self.slug = slugify(self.scientific_name)
+        super().save(*args, **kwargs)
 
     class Meta:
         ordering = ["common_name"]

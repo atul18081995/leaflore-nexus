@@ -3,7 +3,18 @@
 <head>
     <meta charset="UTF-8">
     <title>{{ plant.common_name }} | LeafLore Nexus</title>
+    <meta name="description" content="{{ plant.common_name }} ({{ plant.scientific_name }}) — plant care, growth habits, uses, and cultivation information.">
+
+    <meta property="og:title" content="{{ plant.common_name }} | LeafLore Nexus">
+    <meta property="og:description" content="{{ plant.description|truncatewords:25 }}">
+    <meta property="og:type" content="article">
+    <meta property="og:url" content="{{ request.build_absolute_uri }}">
+
+    {% if plant.primary_image %}
+    <meta property="og:image" content="{{ plant.primary_image.url }}">
+    {% endif %}
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="canonical" href="{{ request.build_absolute_uri }}">
 
     <style>
         body {
