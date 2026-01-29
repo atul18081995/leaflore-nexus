@@ -9,35 +9,89 @@
     <link rel="canonical" href="{{ request.build_absolute_uri }}">
 
     <style>
+        :root {
+            --accent: #2c7a7b;
+            --soft-bg: #f8fcfb;
+            --border-light: #e6f2ef;
+        }
+
         body {
             font-family: system-ui, -apple-system, BlinkMacSystemFont;
             margin: 0;
             padding: 1rem;
             line-height: 1.6;
             color: #222;
-            background: #fafafa;
+            background: linear-gradient(
+                180deg,
+                #f6fbfa 0%,
+                #f9faf9 45%,
+                #ffffff 100%
+            );
         }
-        a { color: #2c7a7b; text-decoration: none; }
+
+        a { color: var(--accent); text-decoration: none; }
         a:hover { text-decoration: underline; }
-        h1 { margin-bottom: 0.25rem; }
-        h2 {
-            margin-top: 2rem;
-            border-bottom: 1px solid #ddd;
-            padding-bottom: 0.3rem;
+
+        .page-container {
+            max-width: 960px;
+            margin: 1.5rem auto;
+            background: #ffffff;
+            padding: 1.75rem;
+            border-radius: 16px;
+            box-shadow: 0 12px 30px rgba(0,0,0,0.05);
+            position: relative;
         }
-        h3 { margin-top: 1.2rem; color: #2c7a7b; }
-        .meta { color: #555; font-size: 0.9rem; }
+
+        .page-container::before {
+            content: "";
+            display: block;
+            height: 6px;
+            width: 100%;
+            border-radius: 6px;
+            background: linear-gradient(90deg, #2c7a7b, #68d391);
+            margin-bottom: 1rem;
+        }
+
+        h1 { margin-bottom: 0.25rem; }
+        .meta { color: #555; font-size: 0.9rem; margin-bottom: 1rem; }
+
+        .section-heading {
+            margin-top: 2rem;
+            padding-bottom: 0.3rem;
+            border-bottom: 1px solid #ddd;
+            color: var(--accent);
+            font-weight: 600;
+        }
+
+        .sub-heading {
+            margin-top: 1.4rem;
+            color: var(--accent);
+            font-weight: 600;
+        }
+
+        .content-section {
+            margin-top: 1.5rem;
+            padding: 1.25rem;
+            background: var(--soft-bg);
+            border-radius: 12px;
+            border: 1px solid var(--border-light);
+        }
 
         .primary-image {
             width: 100%;
             height: 340px;
-            border-radius: 12px;
+            border-radius: 14px;
             overflow: hidden;
             background: #eaeaea;
-            margin: 1rem 0 0.75rem;
+            margin: 1rem 0;
             cursor: pointer;
         }
-        .primary-image img { width: 100%; height: 100%; object-fit: cover; }
+
+        .primary-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
 
         .gallery {
             display: flex;
@@ -45,17 +99,22 @@
             overflow-x: auto;
             margin-bottom: 1.5rem;
         }
+
         .gallery-image {
             width: 96px;
             height: 96px;
-            flex-shrink: 0;
             border-radius: 8px;
             overflow: hidden;
             background: #f0f0f0;
-            cursor: pointer;
             border: 1px solid #ddd;
+            cursor: pointer;
         }
-        .gallery-image img { width: 100%; height: 100%; object-fit: cover; }
+
+        .gallery-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
 
         .care-grid {
             display: grid;
@@ -63,20 +122,85 @@
             gap: 1rem;
             margin-top: 1rem;
         }
-        .care-item {
-            background: #fff;
-            padding: 0.75rem;
-            border-radius: 8px;
-            border: 1px solid #eee;
-        }
-        .care-item strong { display: block; color: #444; margin-bottom: 0.25rem; }
 
-        .climate-block {
-            background: #f7f7f7;
-            border-left: 4px solid #2c7a7b;
-            padding: 0.75rem;
-            margin-top: 0.75rem;
-            border-radius: 6px;
+        .care-item {
+            background: #ffffff;
+            padding: 0.9rem;
+            border-radius: 10px;
+            border: 1px solid #eaeaea;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.04);
+        }
+
+        .care-item strong {
+            display: block;
+            font-size: 0.9rem;
+            font-weight: 700;
+            color: #000;
+            margin-bottom: 0.35rem;
+            letter-spacing: 0.02em;
+        }
+
+        /* ===== CLIMATE MATRIX ===== */
+
+        .climate-matrix {
+            margin-top: 2rem;
+        }
+
+        .climate-title {
+            font-size: 1.15rem;
+            font-weight: 700;
+            color: var(--accent);
+            margin-bottom: 0.9rem;
+            padding: 0.6rem 0.9rem;
+            background: linear-gradient(
+                90deg,
+                rgba(44, 122, 123, 0.12),
+                rgba(44, 122, 123, 0.04)
+            );
+            border-left: 4px solid var(--accent);
+            border-radius: 8px;
+            letter-spacing: 0.02em;
+        }
+
+        .season-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 1rem;
+        }
+
+        .season-cell {
+            background: linear-gradient(135deg, #eef8f6, #ffffff);
+            border-radius: 14px;
+            border: 1px solid var(--border-light);
+            box-shadow: 0 6px 18px rgba(0,0,0,0.05);
+            padding: 0.9rem 1rem 1.1rem;
+        }
+
+        .season-name {
+            font-weight: 700;
+            color: var(--accent);
+            text-align: center;
+            margin-bottom: 0.6rem;
+            text-transform: uppercase;
+            letter-spacing: 0.04em;
+        }
+
+        .season-content p {
+            margin: 0.5rem 0;
+            font-size: 0.95rem;
+        }
+
+        /* ✅ UPDATED: Season note now matches Watering/Sunlight typography */
+        .season-note {
+            margin: 0.5rem 0;
+            font-size: 0.95rem;
+            color: #333;
+        }
+
+        @media (max-width: 700px) {
+            .season-grid {
+                grid-template-columns: 1fr;
+            }
         }
 
         .placeholder {
@@ -87,26 +211,6 @@
             border-left: 4px solid #ccc;
             border-radius: 6px;
         }
-
-        .lightbox {
-            position: fixed;
-            inset: 0;
-            background: rgba(0,0,0,0.85);
-            display: none;
-            align-items: center;
-            justify-content: center;
-            z-index: 999;
-        }
-        .lightbox.active { display: flex; }
-        .lightbox img { max-width: 90%; max-height: 90%; border-radius: 10px; }
-        .lightbox-close {
-            position: absolute;
-            top: 1rem;
-            right: 1rem;
-            color: #fff;
-            font-size: 2rem;
-            cursor: pointer;
-        }
     </style>
 </head>
 
@@ -114,141 +218,138 @@
 
 <a href="/plants/">← Back to plants</a>
 
+<div class="page-container">
+
 <h1>{{ plant.common_name }}</h1>
 <div class="meta"><em>{{ plant.scientific_name }}</em></div>
 
-<!-- PRIMARY IMAGE -->
 {% for img in plant.images.all %}
-    {% if img.is_primary %}
-        <div class="primary-image" onclick="openLightbox('{{ img.image.url }}')">
-            <img src="{{ img.image.url }}" alt="{{ img.caption|default:plant.common_name }}">
-        </div>
-    {% endif %}
+{% if img.is_primary %}
+<div class="primary-image">
+    <img src="{{ img.image.url }}" alt="{{ plant.common_name }}">
+</div>
+{% endif %}
 {% endfor %}
 
-<!-- GALLERY -->
-{% if plant.images.all|length > 1 %}
-<div class="gallery">
-    {% for img in plant.images.all %}
-        <div class="gallery-image" onclick="openLightbox('{{ img.image.url }}')">
-            <img src="{{ img.image.url }}" alt="{{ img.caption|default:plant.common_name }}">
-        </div>
-    {% endfor %}
+<div class="content-section">
+    <h2 class="section-heading">Overview</h2>
+    <p>{{ plant.description }}</p>
 </div>
-{% endif %}
 
-<!-- OVERVIEW -->
-<h2>Overview</h2>
-<p>{{ plant.description }}</p>
+<div class="content-section">
+    <h2 class="section-heading">Care & Cultivation</h2>
 
-<!-- BOTANICAL DETAILS -->
-<h2>Botanical Profile</h2>
-<ul>
-    <li><strong>Family:</strong> {{ plant.family }}</li>
-    <li><strong>Genus:</strong> {{ plant.genus }}</li>
-    {% if plant.species %}<li><strong>Species:</strong> {{ plant.species }}</li>{% endif %}
-    {% if plant.plant_type %}<li><strong>Plant Type:</strong> {{ plant.get_plant_type_display }}</li>{% endif %}
-    {% if plant.lifecycle %}<li><strong>Life Cycle:</strong> {{ plant.get_lifecycle_display }}</li>{% endif %}
-    {% if plant.growth_habit %}<li><strong>Growth Habit:</strong> {{ plant.growth_habit }}</li>{% endif %}
-    {% if plant.origin_region %}<li><strong>Origin:</strong> {{ plant.origin_region }}</li>{% endif %}
-</ul>
-
-<!-- MORPHOLOGY -->
-{% if plant.leaf_description or plant.flower_description or plant.fruit_description %}
-<h2>Morphology</h2>
-{% if plant.leaf_description %}<p><strong>Leaves:</strong> {{ plant.leaf_description }}</p>{% endif %}
-{% if plant.flower_description %}<p><strong>Flowers:</strong> {{ plant.flower_description }}</p>{% endif %}
-{% if plant.fruit_description %}<p><strong>Fruits:</strong> {{ plant.fruit_description }}</p>{% endif %}
-{% endif %}
-
-<!-- USES -->
-{% if plant.medicinal_uses or plant.agricultural_uses or plant.cultural_significance %}
-<h2>Uses & Importance</h2>
-{% if plant.medicinal_uses %}<p><strong>Medicinal:</strong> {{ plant.medicinal_uses }}</p>{% endif %}
-{% if plant.agricultural_uses %}<p><strong>Agricultural:</strong> {{ plant.agricultural_uses }}</p>{% endif %}
-{% if plant.cultural_significance %}<p><strong>Cultural:</strong> {{ plant.cultural_significance }}</p>{% endif %}
-{% endif %}
-
-<!-- CARE -->
-<h2>Care & Cultivation</h2>
-{% if plant.care %}
-<div class="care-grid">
-    <div class="care-item"><strong>Light</strong>{{ plant.care.light_requirement }}</div>
-    <div class="care-item"><strong>Watering</strong>{{ plant.care.watering_frequency }}</div>
-    <div class="care-item"><strong>Soil</strong>{{ plant.care.soil_type }}</div>
-    <div class="care-item"><strong>Temperature</strong>{{ plant.care.temperature_range }}</div>
-
-    <!-- ✅ FIXED PLACEMENT -->
-    <div class="care-item">
-        <strong>Placement</strong>
-        {{ plant.care.get_indoor_outdoor_display }} ·
-        {{ plant.care.get_pot_or_ground_display }}
+    {% if plant.care %}
+    <div class="care-grid">
+        <div class="care-item"><strong>☀️ Light</strong>{{ plant.care.light_requirement }}</div>
+        <div class="care-item"><strong>💧 Watering</strong>{{ plant.care.watering_frequency }}</div>
+        <div class="care-item"><strong>🌱 Soil</strong>{{ plant.care.soil_type }}</div>
+        <div class="care-item"><strong>🌡️ Temperature</strong>{{ plant.care.temperature_range }}</div>
+        <div class="care-item">
+            <strong>🏡 Placement</strong>
+            {{ plant.care.get_indoor_outdoor_display }} · {{ plant.care.get_pot_or_ground_display }}
+        </div>
     </div>
 
-    {% if plant.care.growth_speed %}
-        <div class="care-item"><strong>Growth Speed</strong>{{ plant.care.growth_speed }}</div>
+    {% if plant.care.beginner_mistakes %}
+        <h3 class="sub-heading">Common Beginner Mistakes</h3>
+        <p>{{ plant.care.beginner_mistakes }}</p>
     {% endif %}
-
-    <!-- ✅ ADDED EXPECTED HEIGHT -->
-    {% if plant.care.expected_height %}
-        <div class="care-item"><strong>Expected Height</strong>{{ plant.care.expected_height }}</div>
     {% endif %}
 </div>
 
-{% if plant.care.beginner_mistakes %}
-<h3>Common Beginner Mistakes</h3>
-<p>{{ plant.care.beginner_mistakes }}</p>
-{% endif %}
+<div class="content-section">
+    <h2 class="section-heading">Climate & Seasonal Adjustments</h2>
 
-{% if plant.care.toxicity_notes %}
-<h3>⚠️ Toxicity</h3>
-<p>{{ plant.care.toxicity_notes }}</p>
-{% endif %}
-{% else %}
-<p class="placeholder">Care information will be added soon.</p>
-{% endif %}
+    {% if plant.care and plant.care.climate_overrides.all %}
+    {% regroup plant.care.climate_overrides.all by climate_zone as climate_groups %}
 
-<!-- CLIMATE -->
-<h2>Climate & Seasonal Adjustments</h2>
-{% if plant.care and plant.care.climate_overrides.all %}
-    {% for rule in plant.care.climate_overrides.all %}
-        <div class="climate-block">
-            <strong>{{ rule.get_climate_zone_display }} · {{ rule.get_season_display }}</strong>
-            <p><strong>Watering:</strong> {{ rule.watering_adjustment }}</p>
-            {% if rule.sunlight_adjustment %}
-                <p><strong>Sunlight:</strong> {{ rule.sunlight_adjustment }}</p>
-            {% endif %}
-            {% if rule.special_notes %}
-                <p>{{ rule.special_notes }}</p>
-            {% endif %}
+    {% for group in climate_groups %}
+        <div class="climate-matrix">
+            <div class="climate-title">{{ group.grouper|title }} Climate</div>
+
+            <div class="season-grid">
+
+                <!-- SUMMER -->
+                <div class="season-cell">
+                    <div class="season-name">Summer</div>
+                    {% for rule in group.list %}
+                        {% if rule.season == "summer" %}
+                            <div class="season-content">
+                                <p><strong>💧 Watering</strong><br>{{ rule.watering_adjustment }}</p>
+                                {% if rule.sunlight_adjustment %}
+                                <p><strong>☀️ Sunlight</strong><br>{{ rule.sunlight_adjustment }}</p>
+                                {% endif %}
+                                {% if rule.special_notes %}
+                                <p class="season-note">
+                                    <strong>📝 Season Note</strong><br>
+                                    {{ rule.special_notes }}
+                                </p>
+                                {% endif %}
+                            </div>
+                        {% endif %}
+                    {% endfor %}
+                </div>
+
+                <!-- MONSOON -->
+                <div class="season-cell">
+                    <div class="season-name">Monsoon</div>
+                    {% for rule in group.list %}
+                        {% if rule.season == "monsoon" %}
+                            <div class="season-content">
+                                <p><strong>💧 Watering</strong><br>{{ rule.watering_adjustment }}</p>
+                                {% if rule.sunlight_adjustment %}
+                                <p><strong>☀️ Sunlight</strong><br>{{ rule.sunlight_adjustment }}</p>
+                                {% endif %}
+                                {% if rule.special_notes %}
+                                <p class="season-note">
+                                    <strong>📝 Season Note</strong><br>
+                                    {{ rule.special_notes }}
+                                </p>
+                                {% endif %}
+                            </div>
+                        {% endif %}
+                    {% endfor %}
+                </div>
+
+                <!-- WINTER -->
+                <div class="season-cell">
+                    <div class="season-name">Winter</div>
+                    {% for rule in group.list %}
+                        {% if rule.season == "winter" %}
+                            <div class="season-content">
+                                <p><strong>💧 Watering</strong><br>{{ rule.watering_adjustment }}</p>
+                                {% if rule.sunlight_adjustment %}
+                                <p><strong>☀️ Sunlight</strong><br>{{ rule.sunlight_adjustment }}</p>
+                                {% endif %}
+                                {% if rule.special_notes %}
+                                <p class="season-note">
+                                    <strong>📝 Season Note</strong><br>
+                                    {{ rule.special_notes }}
+                                </p>
+                                {% endif %}
+                            </div>
+                        {% endif %}
+                    {% endfor %}
+                </div>
+
+            </div>
         </div>
     {% endfor %}
-{% else %}
-<p class="placeholder">Climate-specific guidance will be added soon.</p>
-{% endif %}
-
-<!-- SAFETY -->
-{% if plant.toxicity or plant.precautions %}
-<h2>Safety & Precautions</h2>
-{% if plant.toxicity %}<p><strong>Toxicity:</strong> {{ plant.toxicity }}</p>{% endif %}
-{% if plant.precautions %}<p><strong>Precautions:</strong> {{ plant.precautions }}</p>{% endif %}
-{% endif %}
-
-<!-- LIGHTBOX -->
-<div class="lightbox" id="lightbox" onclick="closeLightbox()">
-    <span class="lightbox-close">&times;</span>
-    <img id="lightbox-img" src="" alt="">
+    {% else %}
+        <p class="placeholder">Climate-specific guidance will be added soon.</p>
+    {% endif %}
 </div>
 
-<script>
-function openLightbox(src) {
-    document.getElementById("lightbox-img").src = src;
-    document.getElementById("lightbox").classList.add("active");
-}
-function closeLightbox() {
-    document.getElementById("lightbox").classList.remove("active");
-}
-</script>
+{% if plant.toxicity or plant.precautions %}
+<div class="content-section">
+    <h2 class="section-heading">Safety & Precautions</h2>
+    {% if plant.toxicity %}<p><strong>Toxicity:</strong> {{ plant.toxicity }}</p>{% endif %}
+    {% if plant.precautions %}<p><strong>Precautions:</strong> {{ plant.precautions }}</p>{% endif %}
+</div>
+{% endif %}
+
+</div>
 
 </body>
 </html>
