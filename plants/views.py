@@ -48,8 +48,18 @@ def plant_detail_view(request, slug):
         slug=slug,
         is_published=True,
     )
+
+    # ✅ Primary image logic (SAFE for templates)
+    primary_image = (
+        plant.images.filter(is_primary=True).first()
+        or plant.images.first()
+    )
+
     return render(
         request,
         "plants/plant_detail.html",
-        {"plant": plant},
+        {
+            "plant": plant,
+            "primary_image": primary_image,
+        },
     )

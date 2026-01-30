@@ -117,6 +117,9 @@ class Plant(models.Model):
             self.slug = slugify(self.scientific_name)
         super().save(*args, **kwargs)
 
+    @property
+    def has_nursery(self):
+        return hasattr(self, "nursery")
     class Meta:
         ordering = ["common_name"]
 

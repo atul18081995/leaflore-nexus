@@ -190,6 +190,15 @@
             font-size: 0.95rem;
         }
 
+        .content-section ul {
+            margin: 0.75rem 0 0;
+            padding-left: 1.2rem;
+        }
+
+        .content-section li {
+            margin-bottom: 0.4rem;
+        }
+
         /* ✅ UPDATED: Season note now matches Watering/Sunlight typography */
         .season-note {
             margin: 0.5rem 0;
@@ -203,6 +212,173 @@
             }
         }
 
+        .nursery-cta {
+            color: #ffffff;
+            background: linear-gradient(90deg, #2c7a7b, #68d391);
+            border: none;
+            border-radius: 999px;
+            cursor: not-allowed;
+            opacity: 0.85;
+        }
+
+        .nursery-cta .cta-icon {
+            font-size: 1.05rem;
+            filter: drop-shadow(0 1px 1px rgb(0, 0, 0));
+        }
+
+        .notify-form {
+            margin-top: 0.75rem;
+            display: flex;
+            gap: 0.5rem;
+        }
+
+        .notify-form input {
+            flex: 1;
+            padding: 0.45rem 0.6rem;
+            border-radius: 6px;
+            border: 1px solid #ccc;
+            font-size: 0.9rem;
+        }
+
+        .notify-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.45rem;
+
+            padding: 0.55rem 1.1rem;
+            height: 38px;
+            border-radius: 999px;
+
+            background: var(--accent);
+            color: #ffffff;
+            font-weight: 600;
+            font-size: 0.9rem;
+
+            border: none;
+            cursor: pointer;
+            white-space: nowrap;
+        }
+
+
+        .notify-btn:hover {
+            opacity: 0.9;
+        }
+
+        .messages {
+            margin: 1rem 0 1.5rem;
+        }
+
+        .message {
+            padding: 0.7rem 1rem;
+            border-radius: 8px;
+            font-size: 0.95rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .message.success {
+            background: #e6fffa;
+            border-left: 4px solid #2c7a7b;
+            color: #065f5b;
+        }
+
+        .message.error {
+            background: #fdecea;
+            border-left: 4px solid #b00020;
+            color: #7a1020;
+        }
+
+        /* Highlight animation */
+        .message {
+            animation: slideFadeIn 0.4s ease-out;
+        }
+
+        /* Auto fade-out class */
+        .message.fade-out {
+            opacity: 0;
+            transform: translateY(-6px);
+            transition: opacity 0.6s ease, transform 0.6s ease;
+        }
+
+        @keyframes slideFadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(-6px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        .nursery-actions {
+            margin-top: 1.25rem;
+            display: flex;
+            flex-direction: column;
+            gap: 0.9rem;
+        }
+
+        /* Cart + Wishlist row */
+        .nursery-action-row {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            flex-wrap: wrap;
+        }
+
+        /* Keep wishlist visually secondary */
+        .wishlist-form {
+            display: flex;
+            align-items: center;
+            gap: 0.4rem;
+        }
+
+        .nursery-cta,
+        .wishlist-btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.45rem;
+
+            height: 40px;                 /* 🔴 hard lock */
+            padding: 0 1.25rem;           /* horizontal only */
+            border-radius: 999px;
+
+            font-size: 0.95rem;
+            font-weight: 600;
+            line-height: 1;               /* 🔴 critical */
+            white-space: nowrap;
+        }
+
+        .wishlist-btn {
+            background: #fde2e4;
+            color: #9f1239;
+            border: none;
+            cursor: pointer;
+        }
+
+        .wishlist-btn:hover {
+            background: #fecdd3;
+        }
+
+        /* Mobile polish */
+        @media (max-width: 600px) {
+            .nursery-action-row {
+                flex-direction: column;
+                align-items: stretch;
+            }
+
+            .wishlist-btn {
+                width: 100%;
+                text-align: center;
+            }
+        }
+
+        .nursery-primary-actions {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;   /* spacing between buttons */
+            flex-wrap: wrap;
+        }
+
         .placeholder {
             color: #777;
             font-style: italic;
@@ -213,12 +389,36 @@
         }
     </style>
 </head>
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        const messages = document.querySelectorAll(".message");
+
+        messages.forEach(message => {
+            setTimeout(() => {
+                message.classList.add("fade-out");
+
+                setTimeout(() => {
+                    message.remove();
+                }, 600); // remove after fade animation
+            }, 5000); // 5 seconds visible
+        });
+    });
+</script>
 
 <body>
 
 <a href="/plants/">← Back to plants</a>
 
 <div class="page-container">
+    {% if messages %}
+    <div class="messages">
+        {% for message in messages %}
+            <div class="message {{ message.tags }}">
+                {{ message }}
+            </div>
+        {% endfor %}
+    </div>
+{% endif %}
 
 <h1>{{ plant.common_name }}</h1>
 <div class="meta"><em>{{ plant.scientific_name }}</em></div>
@@ -250,6 +450,87 @@
             {{ plant.care.get_indoor_outdoor_display }} · {{ plant.care.get_pot_or_ground_display }}
         </div>
     </div>
+
+    {% if plant.has_nursery %}
+    <div class="content-section">
+        <h2 class="section-heading">Nursery Information</h2>
+
+        {% if plant.nursery.is_sellable %}
+            <p><strong>Status:</strong> 🌱 Available in nursery</p>
+        {% else %}
+            <p><strong>Status:</strong> ⏳ Not currently available</p>
+        {% endif %}
+
+        <ul>
+            <li>
+                <strong>Propagation:</strong>
+                {{ plant.nursery.propagation_method }}
+            </li>
+
+            {% if plant.nursery.grow_time_days %}
+            <li>
+                <strong>Grow Time:</strong>
+                {{ plant.nursery.grow_time_days }} days
+            </li>
+            {% endif %}
+
+            <li>
+                <strong>Difficulty:</strong>
+                {{ plant.nursery.difficulty|title }}
+            </li>
+        </ul>
+
+        {% if plant.nursery.nursery_notes %}
+            <p>{{ plant.nursery.nursery_notes }}</p>
+        {% endif %}
+
+        <p style="margin-top: 1rem; font-size: 0.9rem; color: #555;">
+            This plant is available through our nursery network.
+            Ordering and delivery options will be enabled soon.
+        </p>
+
+    <div class="nursery-actions">
+        <div class="nursery-action-row">
+            <button class="nursery-cta" disabled>
+                <span class="cta-icon">🛒</span>
+                <span class="cta-text">Coming Soon</span>
+            </button>
+            <form method="post"
+                action="{% url 'wishlist-add' plant.id %}"
+                class="wishlist-form">
+                {% csrf_token %}
+
+                {% if not user.is_authenticated %}
+                    <input
+                        type="email"
+                        name="email"
+                        placeholder="Email for wishlist"
+                        required
+                    >
+                {% endif %}
+
+                <button type="submit" class="wishlist-btn">
+                    ❤️ Add to Wishlist
+                </button>
+            </form>
+</div>
+    <form method="post"
+          action="{% url 'nursery-notify' plant.id %}"
+          class="notify-form">
+        {% csrf_token %}
+        <input
+            type="email"
+            name="email"
+            placeholder="Enter email for notification"
+            required
+        >
+        <button type="submit" class="notify-btn">
+            🔔 Notify when available
+        </button>
+    </form>
+    </div>
+    </div>
+    {% endif %}
 
     {% if plant.care.beginner_mistakes %}
         <h3 class="sub-heading">Common Beginner Mistakes</h3>

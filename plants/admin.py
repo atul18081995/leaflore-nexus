@@ -5,6 +5,7 @@ from .models import (
     PlantCareProfile,
     ClimateCareOverride,
 )
+from nursery.models import NurseryProfile
 
 
 # --------------------------------------------------
@@ -15,6 +16,16 @@ class PlantImageInline(admin.TabularInline):
     extra = 1
     fields = ("image", "caption", "is_primary", "order")
     ordering = ("order",)
+
+
+# --------------------------------------------------
+# Inline: Nursery Profile (NEW)
+# --------------------------------------------------
+class NurseryProfileInline(admin.StackedInline):
+    model = NurseryProfile
+    extra = 0
+    max_num = 1
+    can_delete = True
 
 
 # --------------------------------------------------
@@ -47,7 +58,11 @@ class PlantAdmin(admin.ModelAdmin):
 
     prepopulated_fields = {"slug": ("scientific_name",)}
 
-    inlines = [PlantImageInline]
+    # ✅ BOTH image + nursery inline
+    inlines = [
+        PlantImageInline,
+        NurseryProfileInline,
+    ]
 
     fieldsets = (
         ("Basic Identity", {
@@ -105,6 +120,19 @@ class PlantAdmin(admin.ModelAdmin):
         }),
     )
 
+        # ✅ ADD THIS METHOD AT THE BOTTOM OF PlantAdmin
+    def save_model(self, request, obj, form, change):
+        super().save_model(request, obj, form, change)
+
+        from nursery.models import NurseryProfile
+
+        NurseryProfile.objects.get_or_create(
+            plant=obj,
+            defaults={
+                "propagation_method": "Seed",
+                "difficulty": "medium",
+            }
+        )
 
 # --------------------------------------------------
 # Climate Care Inline
@@ -127,3 +155,4 @@ class PlantCareProfileAdmin(admin.ModelAdmin):
     )
 
     inlines = [ClimateCareInline]
+

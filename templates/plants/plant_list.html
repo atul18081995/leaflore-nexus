@@ -151,6 +151,25 @@
             margin-top: 0.15rem;
         }
 
+        .nursery-badge {
+            display: inline-block;
+            margin-top: 0.35rem;
+            padding: 0.25rem 0.6rem;
+            font-size: 0.75rem;
+            border-radius: 999px;
+            font-weight: 600;
+        }
+
+        .nursery-badge.available {
+            background: #e6fffa;
+            color: #065f46;
+        }
+
+        .nursery-badge.coming-soon {
+            background: #f1f5f9;
+            color: #475569;
+        }
+
         .description {
             margin-top: 0.5rem;
             font-size: 0.95rem;
@@ -218,6 +237,18 @@
                 <div class="scientific">
                     {{ plant.scientific_name }}
                 </div>
+
+                {% if plant.has_nursery%}
+                    {% if plant.nursery.is_sellable %}
+                        <span class="nursery-badge available">
+                            🌱 Available in Nursery
+                        </span>
+                    {% else %}
+                        <span class="nursery-badge coming-soon">
+                            ⏳ Nursery (Coming Soon)
+                        </span>
+                    {% endif %}
+                {% endif %}
 
                 <div class="description">
                     {{ plant.description|truncatewords:20 }}
