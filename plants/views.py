@@ -1,24 +1,24 @@
 from django.shortcuts import render, get_object_or_404
-from rest_framework.generics import ListAPIView
 from django.db.models import Q
+from rest_framework.generics import ListAPIView
+
 from .models import Plant
 from .serializers import PlantSerializer
+from services.alternative_engine import PlantAlternativeEngine
 
 
-# --------------------
-# API views
-# --------------------
+# --------------------------------------------------
+# API VIEWS
+# --------------------------------------------------
 
 class PlantListAPIView(ListAPIView):
     queryset = Plant.objects.filter(is_published=True)
     serializer_class = PlantSerializer
 
 
-# --------------------
-# Web views (public)
-# --------------------
-
-from django.db.models import Q
+# --------------------------------------------------
+# WEB VIEWS (PUBLIC)
+# --------------------------------------------------
 
 def plant_list_view(request):
     query = request.GET.get("q", "").strip()
@@ -33,14 +33,17 @@ def plant_list_view(request):
             | Q(genus__icontains=query)
         )
 
+    context = {
+        "plants": plants,
+        "query": query,
+    }
+
     return render(
         request,
         "plants/plant_list.html",
-        {
-            "plants": plants,
-            "query": query,
-        },
+        context,
     )
+
 
 def plant_detail_view(request, slug):
     plant = get_object_or_404(
@@ -49,17 +52,37 @@ def plant_detail_view(request, slug):
         is_published=True,
     )
 
-    # ✅ Primary image logic (SAFE for templates)
+    # --------------------------------------------------
+    # PRIMARY IMAGE (SAFE – NO TEMPLATE LOGIC BREAK)
+    # --------------------------------------------------
     primary_image = (
         plant.images.filter(is_primary=True).first()
         or plant.images.first()
     )
 
+    # --------------------------------------------------
+    # AI ALTERNATIVE ENGINE
+    # --------------------------------------------------
+    alternative_engine = PlantAlternativeEngine(plant)
+    alternatives = alternative_engine.get_alternatives(limit=4)
+
+    # --------------------------------------------------
+    # TEMPLATE CONTEXT (SINGLE SOURCE OF TRUTH)
+    # --------------------------------------------------
+    context = {
+        "plant": plant,
+        "primary_image": primary_image,
+        "alternatives": alternatives,
+
+        # Used to highlight AI alternatives when plant
+        # is not sellable in nursery
+        "show_alternative_highlight": not (
+            plant.has_nursery and plant.nursery.is_sellable
+        ),
+    }
+
     return render(
         request,
         "plants/plant_detail.html",
-        {
-            "plant": plant,
-            "primary_image": primary_image,
-        },
+        context,
     )
