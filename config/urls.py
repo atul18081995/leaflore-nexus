@@ -11,6 +11,9 @@ urlpatterns = [
 
     # API
     path("api/", include("plants.api_urls")),
+
+    # Nursery module
+    path("nursery/", include("nursery.urls")),
 ]
 
 if settings.DEBUG:

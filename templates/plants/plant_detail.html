@@ -5,7 +5,8 @@
     <title>{{ plant.common_name }} | LeafLore Nexus</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <meta name="description" content="{{ plant.common_name }} ({{ plant.scientific_name }}) — botanical details, care, uses, and climate-specific guidance.">
+    <meta name="description"
+          content="{{ plant.common_name }} ({{ plant.scientific_name }}) — botanical details, care, uses, and climate-specific guidance.">
     <link rel="canonical" href="{{ request.build_absolute_uri }}">
 
     <style>
@@ -84,33 +85,9 @@
             overflow: hidden;
             background: #eaeaea;
             margin: 1rem 0;
-            cursor: pointer;
         }
 
         .primary-image img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-        }
-
-        .gallery {
-            display: flex;
-            gap: 0.6rem;
-            overflow-x: auto;
-            margin-bottom: 1.5rem;
-        }
-
-        .gallery-image {
-            width: 96px;
-            height: 96px;
-            border-radius: 8px;
-            overflow: hidden;
-            background: #f0f0f0;
-            border: 1px solid #ddd;
-            cursor: pointer;
-        }
-
-        .gallery-image img {
             width: 100%;
             height: 100%;
             object-fit: cover;
@@ -135,31 +112,15 @@
             display: block;
             font-size: 0.9rem;
             font-weight: 700;
-            color: #000;
             margin-bottom: 0.35rem;
-            letter-spacing: 0.02em;
         }
 
-        /* ===== CLIMATE MATRIX ===== */
-
-        .climate-matrix {
-            margin-top: 2rem;
-        }
-
+        /* CLIMATE MATRIX */
         .climate-title {
             font-size: 1.15rem;
             font-weight: 700;
             color: var(--accent);
-            margin-bottom: 0.9rem;
-            padding: 0.6rem 0.9rem;
-            background: linear-gradient(
-                90deg,
-                rgba(44, 122, 123, 0.12),
-                rgba(44, 122, 123, 0.04)
-            );
-            border-left: 4px solid var(--accent);
-            border-radius: 8px;
-            letter-spacing: 0.02em;
+            margin: 1.5rem 0 0.9rem;
         }
 
         .season-grid {
@@ -169,39 +130,20 @@
         }
 
         .season-cell {
-            background: linear-gradient(135deg, #eef8f6, #ffffff);
+            background: #ffffff;
             border-radius: 14px;
             border: 1px solid var(--border-light);
-            box-shadow: 0 6px 18px rgba(0,0,0,0.05);
-            padding: 0.9rem 1rem 1.1rem;
+            padding: 1rem;
         }
 
         .season-name {
             font-weight: 700;
-            color: var(--accent);
             text-align: center;
             margin-bottom: 0.6rem;
-            text-transform: uppercase;
-            letter-spacing: 0.04em;
+            color: var(--accent);
         }
 
-        .season-content p {
-            margin: 0.5rem 0;
-            font-size: 0.95rem;
-        }
-
-        .content-section ul {
-            margin: 0.75rem 0 0;
-            padding-left: 1.2rem;
-        }
-
-        .content-section li {
-            margin-bottom: 0.4rem;
-        }
-
-        /* ✅ UPDATED: Season note now matches Watering/Sunlight typography */
         .season-note {
-            margin: 0.5rem 0;
             font-size: 0.95rem;
             color: #333;
         }
@@ -212,173 +154,6 @@
             }
         }
 
-        .nursery-cta {
-            color: #ffffff;
-            background: linear-gradient(90deg, #2c7a7b, #68d391);
-            border: none;
-            border-radius: 999px;
-            cursor: not-allowed;
-            opacity: 0.85;
-        }
-
-        .nursery-cta .cta-icon {
-            font-size: 1.05rem;
-            filter: drop-shadow(0 1px 1px rgb(0, 0, 0));
-        }
-
-        .notify-form {
-            margin-top: 0.75rem;
-            display: flex;
-            gap: 0.5rem;
-        }
-
-        .notify-form input {
-            flex: 1;
-            padding: 0.45rem 0.6rem;
-            border-radius: 6px;
-            border: 1px solid #ccc;
-            font-size: 0.9rem;
-        }
-
-        .notify-btn {
-            display: inline-flex;
-            align-items: center;
-            gap: 0.45rem;
-
-            padding: 0.55rem 1.1rem;
-            height: 38px;
-            border-radius: 999px;
-
-            background: var(--accent);
-            color: #ffffff;
-            font-weight: 600;
-            font-size: 0.9rem;
-
-            border: none;
-            cursor: pointer;
-            white-space: nowrap;
-        }
-
-
-        .notify-btn:hover {
-            opacity: 0.9;
-        }
-
-        .messages {
-            margin: 1rem 0 1.5rem;
-        }
-
-        .message {
-            padding: 0.7rem 1rem;
-            border-radius: 8px;
-            font-size: 0.95rem;
-            margin-bottom: 0.5rem;
-        }
-
-        .message.success {
-            background: #e6fffa;
-            border-left: 4px solid #2c7a7b;
-            color: #065f5b;
-        }
-
-        .message.error {
-            background: #fdecea;
-            border-left: 4px solid #b00020;
-            color: #7a1020;
-        }
-
-        /* Highlight animation */
-        .message {
-            animation: slideFadeIn 0.4s ease-out;
-        }
-
-        /* Auto fade-out class */
-        .message.fade-out {
-            opacity: 0;
-            transform: translateY(-6px);
-            transition: opacity 0.6s ease, transform 0.6s ease;
-        }
-
-        @keyframes slideFadeIn {
-            from {
-                opacity: 0;
-                transform: translateY(-6px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
-        .nursery-actions {
-            margin-top: 1.25rem;
-            display: flex;
-            flex-direction: column;
-            gap: 0.9rem;
-        }
-
-        /* Cart + Wishlist row */
-        .nursery-action-row {
-            display: flex;
-            align-items: center;
-            gap: 0.75rem;
-            flex-wrap: wrap;
-        }
-
-        /* Keep wishlist visually secondary */
-        .wishlist-form {
-            display: flex;
-            align-items: center;
-            gap: 0.4rem;
-        }
-
-        .nursery-cta,
-        .wishlist-btn {
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            gap: 0.45rem;
-
-            height: 40px;                 /* 🔴 hard lock */
-            padding: 0 1.25rem;           /* horizontal only */
-            border-radius: 999px;
-
-            font-size: 0.95rem;
-            font-weight: 600;
-            line-height: 1;               /* 🔴 critical */
-            white-space: nowrap;
-        }
-
-        .wishlist-btn {
-            background: #fde2e4;
-            color: #9f1239;
-            border: none;
-            cursor: pointer;
-        }
-
-        .wishlist-btn:hover {
-            background: #fecdd3;
-        }
-
-        /* Mobile polish */
-        @media (max-width: 600px) {
-            .nursery-action-row {
-                flex-direction: column;
-                align-items: stretch;
-            }
-
-            .wishlist-btn {
-                width: 100%;
-                text-align: center;
-            }
-        }
-
-        .nursery-primary-actions {
-            display: flex;
-            align-items: center;
-            gap: 0.75rem;   /* spacing between buttons */
-            flex-wrap: wrap;
-        }
-
         .placeholder {
             color: #777;
             font-style: italic;
@@ -387,248 +162,605 @@
             border-left: 4px solid #ccc;
             border-radius: 6px;
         }
+
+        .alternative-item {
+            margin-top: 0.75rem;
+        }
+
+        /* Messages */
+        .messages { margin-bottom: 1.5rem; }
+        .message {
+            padding: 0.7rem 1rem;
+            border-radius: 8px;
+            margin-bottom: 0.5rem;
+            font-size: 0.95rem;
+        }
+        .message.success {
+            background: #e6fffa;
+            border-left: 4px solid #2c7a7b;
+        }
+        .message.error {
+            background: #fdecea;
+            border-left: 4px solid #b00020;
+        }
+        /* =========================
+            Nursery Actions Layout
+            ========================= */
+
+            .nursery-actions {
+                display: flex;
+                flex-direction: column;
+                gap: 0.9rem;
+                margin-top: 1.2rem;
+            }
+
+            /* Buttons */
+            .nursery-cta,
+            .wishlist-btn,
+            .notify-btn {
+                width: 100%;
+                height: 42px;
+                border-radius: 999px;
+                font-size: 0.95rem;
+                font-weight: 600;
+                border: none;
+                cursor: pointer;
+            }
+
+            /* CTA */
+            .nursery-cta {
+                background: linear-gradient(90deg, #2c7a7b, #68d391);
+                color: #fff; 
+                opacity: 0.9;
+                cursor: not-allowed;
+            }
+
+            /* Wishlist */
+            .wishlist-btn {
+                background: #fde2e4;
+                color: #9f1239;
+            }
+
+            /* Notify */
+            .notify-btn {
+                background: #2c7a7b;
+                color: #fff;
+            }
+
+            /* Inputs */
+            .nursery-form input {
+                width: 100%;
+                margin-bottom: 0.4rem;
+                padding: 0.45rem 0.6rem;
+                border-radius: 6px;
+                border: 1px solid #ccc;
+            }
+
+            /* =========================
+            Desktop Enhancement
+            ========================= */
+            @media (min-width: 768px) {
+                .nursery-actions {
+                    flex-direction: row;
+                    align-items: center;
+                    flex-wrap: wrap;
+                }
+
+                .nursery-form {
+                    display: flex;
+                    align-items: center;
+                    gap: 0.5rem;
+                }
+
+                .nursery-form input {
+                    width: 180px;
+                    margin-bottom: 0;
+                }
+
+                .nursery-cta,
+                .wishlist-btn,
+                .notify-btn {
+                    width: auto;
+                    padding: 0 1.4rem;
+                }
+            }
+        /* =========================
+        Nursery Alternatives
+        ========================= */
+
+        .nursery-alternatives {
+            margin-top: 1.4rem;
+        }
+
+        .nursery-alt-hint {
+            font-size: 0.9rem;
+            color: #555;
+            margin: 0.3rem 0 0.8rem;
+        }
+
+        /* =========================
+        Alternative Cards
+        ========================= */
+
+        .alternative-wrapper {
+            margin-top: 1rem;
+        }
+
+        /* Mobile dotted container */
+        .alternative-dotted {
+            border: 2px dashed #7fb7b0;
+            border-radius: 16px;
+            padding: 1rem;
+            display: flex;
+            flex-direction: column;
+            gap: 0.8rem;
+        }
+
+        /* Card */
+        .alternative-card {
+            background: #ffffff;
+            border-radius: 14px;
+            padding: 0.9rem 1rem;
+            box-shadow: 0 4px 14px rgba(0,0,0,0.06);
+        }
+
+        .alt-title {
+            font-size: 1rem;
+        }
+
+        .alt-scientific {
+            font-size: 0.9rem;
+            color: #555;
+            margin-bottom: 0.3rem;
+        }
+
+        .alt-tag {
+            font-size: 0.85rem;
+            color: #b45309;
+            margin-bottom: 0.4rem;
+        }
+
+        .alt-view-link {
+            font-weight: 600;
+            color: #2c7a7b;
+            text-decoration: none;
+        }
+
+        .alt-view-link:hover {
+            text-decoration: underline;
+        }
+
+        /* Desktop */
+        @media (min-width: 768px) {
+            .alternative-dotted {
+                border: none;
+                padding: 0;
+                flex-direction: row;
+                gap: 1rem;
+            }
+
+            .alternative-card {
+                flex: 1;
+            }
+        }
+        /* =========================
+        Wishlist & Notify Forms
+        ========================= */
+
+        .action-form {
+            display: flex;
+            flex-direction: column;
+            gap: 0.6rem;
+        }
+
+        /* Input styling */
+        .action-form input {
+            width: 100%;
+            height: 42px;
+            padding: 0 0.9rem;
+            border-radius: 999px;
+            border: 1px solid #d1d5db;
+            font-size: 0.9rem;
+            outline: none;
+            background: #ffffff;
+            box-shadow: inset 0 1px 2px rgba(0,0,0,0.04);
+        }
+
+        .action-form input::placeholder {
+            color: #9ca3af;
+        }
+
+        /* Focus state */
+        .action-form input:focus {
+            border-color: #2c7a7b;
+            box-shadow: 0 0 0 2px rgba(44, 122, 123, 0.15);
+        }
+
+        /* Buttons (base) */
+        .wishlist-btn,
+        .notify-btn {
+            height: 44px;
+            border-radius: 999px;
+            font-size: 0.95rem;
+            font-weight: 600;
+            border: none;
+            cursor: pointer;
+            white-space: nowrap;
+            transition: transform 0.05s ease, box-shadow 0.15s ease;
+        }
+
+        /* Wishlist button */
+        .wishlist-btn {
+            background: #fde2e4;
+            color: #9f1239;
+        }
+
+        .wishlist-btn:hover {
+            background: #fecdd3;
+        }
+
+        /* Notify button */
+        .notify-btn {
+            background: linear-gradient(90deg, #2c7a7b, #4fa3a5);
+            color: #ffffff;
+        }
+
+        .notify-btn:hover {
+            opacity: 0.95;
+        }
+
+        /* Subtle press effect */
+        .wishlist-btn:active,
+        .notify-btn:active {
+            transform: translateY(1px);
+        }
+
+        /* =========================
+        Desktop enhancement
+        ========================= */
+
+        @media (min-width: 768px) {
+            .action-form {
+                flex-direction: row;
+                align-items: center;
+            }
+
+            .action-form input {
+                flex: 1;
+                height: 44px;
+            }
+
+            .wishlist-btn,
+            .notify-btn {
+                padding: 0 1.4rem;
+            }
+        }
+
+        /* =========================
+        Nursery Actions Wrapper
+        ========================= */
+
+        .nursery-actions {
+            margin-top: 1.2rem;
+            display: flex;
+            flex-direction: column;
+            gap: 1.1rem;
+            width: 100%;
+            max-width: 100%;
+            box-sizing: border-box;
+        }
+
+        /* -------------------------
+        Coming Soon (always alone)
+        ------------------------- */
+        .nursery-cta-row {
+            width: 100%;
+        }
+
+        .nursery-cta {
+            width: 100%;
+            height: 46px;
+            border-radius: 999px;
+            background: linear-gradient(90deg, #2c7a7b, #68d391);
+            color: #fff;
+            font-weight: 600;
+            border: none;
+            cursor: not-allowed;
+        }
+
+        /* =========================
+        Action Forms (Base)
+        ========================= */
+
+        .action-form {
+            display: flex;
+            flex-direction: column;   /* 🔒 MOBILE DEFAULT */
+            gap: 0.6rem;
+            width: 100%;
+            max-width: 100%;
+        }
+
+        /* Input */
+        .action-form input {
+            width: 100%;
+            max-width: 100%;
+            height: 44px;
+            padding: 0 1rem;
+            border-radius: 999px;
+            border: 1px solid #d1d5db;
+            font-size: 0.9rem;
+            box-sizing: border-box;   /* 🔒 prevents overflow */
+            background: #ffffff;
+        }
+
+        .action-form input::placeholder {
+            color: #9ca3af;
+        }
+
+        /* Buttons */
+        .wishlist-btn,
+        .notify-btn {
+            width: 100%;
+            height: 44px;
+            border-radius: 999px;
+            font-size: 0.95rem;
+            font-weight: 600;
+            border: none;
+            cursor: pointer;
+        }
+
+        /* Wishlist */
+        .wishlist-btn {
+            background: #fde2e4;
+            color: #9f1239;
+        }
+
+        /* Notify */
+        .notify-btn {
+            background: linear-gradient(90deg, #2c7a7b, #4fa3a5);
+            color: #ffffff;
+        }
+
+        /* =========================
+        Desktop Layout (ONLY HERE)
+        ========================= */
+
+        @media (min-width: 768px) {
+
+            /* Keep Coming Soon on its own row */
+            .nursery-cta-row {
+                margin-bottom: 0.4rem;
+            }
+
+            /* Put wishlist + notify side-by-side */
+            .nursery-actions {
+                gap: 0.9rem;
+            }
+
+            .action-form {
+                flex-direction: row;        /* 👈 desktop row */
+                align-items: center;
+                gap: 0.6rem;
+            }
+
+            .action-form input {
+                flex: 1;
+                min-width: 0;               /* 🔒 critical overflow fix */
+            }
+
+            .wishlist-btn,
+            .notify-btn {
+                width: auto;
+                padding: 0 1.4rem;
+                white-space: nowrap;
+            }
+        }
+        #message-container {
+            margin-bottom: 1rem;
+        }
+
+        .alert {
+            padding: 0.75rem 1rem;
+            border-radius: 10px;
+            margin-bottom: 0.6rem;
+            font-weight: 500;
+        }
+
+        .alert-success {
+            background: #ecfdf5;
+            border-left: 4px solid #10b981;
+        }
+
+        .alert-error {
+            background: #fef2f2;
+            border-left: 4px solid #ef4444;
+        }
+
+        /* =========================
+            Recommendations
+            ========================= */
+
+            .recommendation-section {
+                margin-top: 2rem;
+            }
+
+            .recommendation-hint {
+                color: #555;
+                margin-bottom: 1rem;
+            }
+
+            .recommendation-grid {
+                display: grid;
+                grid-template-columns: 1fr;
+                gap: 1rem;
+            }
+
+            .recommendation-card {
+                background: #fff;
+                border-radius: 14px;
+                padding: 1rem;
+                box-shadow: 0 6px 18px rgba(0,0,0,0.06);
+            }
+
+            .rec-name {
+                display: block;
+                font-size: 1rem;
+            }
+
+            .rec-scientific {
+                display: block;
+                font-size: 0.9rem;
+                color: #666;
+            }
+
+            .rec-tag {
+                display: inline-block;
+                margin: 0.4rem 0;
+                font-size: 0.75rem;
+                padding: 0.2rem 0.6rem;
+                border-radius: 999px;
+                font-weight: 600;
+            }
+
+            .rec-tag.available {
+                background: #dcfce7;
+                color: #166534;
+            }
+
+            .rec-tag.coming-soon {
+                background: #fef3c7;
+                color: #92400e;
+            }
+
+            .rec-tag.knowledge {
+                background: #e5e7eb;
+                color: #374151;
+            }
+
+            .rec-link {
+                display: inline-block;
+                margin-top: 0.4rem;
+                font-weight: 600;
+                color: #2c7a7b;
+                text-decoration: none;
+            }
+
+            .rec-link:hover {
+                text-decoration: underline;
+            }
+
+            @media (min-width: 768px) {
+                .recommendation-grid {
+                    grid-template-columns: repeat(3, 1fr);
+                }
+            }
+            /* =========================
+   Nursery Action Row
+========================= */
+
+/* Mobile default */
+.nursery-action-row {
+    display: flex;
+    flex-direction: column;
+    gap: 0.9rem;
+}
+
+/* Each form */
+.nursery-action-row .action-form {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
+/* Desktop layout */
+@media (min-width: 768px) {
+
+    .nursery-action-row {
+        flex-direction: row;
+        align-items: center;
+        gap: 1rem;
+    }
+
+    .nursery-action-row .action-form {
+        flex-direction: row;
+        align-items: center;
+        gap: 0.5rem;
+    }
+
+    .nursery-action-row input {
+        width: 190px;
+        min-width: 0;
+    }
+
+    .wishlist-btn,
+    .notify-btn {
+        white-space: nowrap;
+        padding: 0 1.4rem;
+    }
+}
     </style>
 </head>
 <script>
-    document.addEventListener("DOMContentLoaded", function () {
-        const messages = document.querySelectorAll(".message");
+document.addEventListener("DOMContentLoaded", function () {
+    const messages = document.querySelectorAll("#message-container .alert");
 
-        messages.forEach(message => {
-            setTimeout(() => {
-                message.classList.add("fade-out");
+    if (!messages.length) return;
 
-                setTimeout(() => {
-                    message.remove();
-                }, 600); // remove after fade animation
-            }, 5000); // 5 seconds visible
+    setTimeout(() => {
+        messages.forEach(msg => {
+            msg.style.transition = "opacity 0.6s ease, transform 0.6s ease";
+            msg.style.opacity = "0";
+            msg.style.transform = "translateY(-10px)";
         });
-    });
-</script>
 
+        // Remove from DOM after animation
+        setTimeout(() => {
+            const container = document.getElementById("message-container");
+            if (container) container.remove();
+        }, 700);
+
+    }, 3000); // ⏱ 3 seconds
+});
+</script>
 <body>
 
 <a href="/plants/">← Back to plants</a>
 
 <div class="page-container">
-    {% if messages %}
-    <div class="messages">
-        {% for message in messages %}
-            <div class="message {{ message.tags }}">
-                {{ message }}
-            </div>
-        {% endfor %}
+
+    {% include "plants/partials/_messages.html" %}
+
+    <h1>{{ plant.common_name }}</h1>
+    <div class="meta"><em>{{ plant.scientific_name }}</em></div>
+
+    {% if primary_image %}
+    <div class="primary-image">
+        <img src="{{ primary_image.image.url }}" alt="{{ plant.common_name }}">
     </div>
-{% endif %}
+    {% endif %}
 
-<h1>{{ plant.common_name }}</h1>
-<div class="meta"><em>{{ plant.scientific_name }}</em></div>
-
-{% for img in plant.images.all %}
-{% if img.is_primary %}
-<div class="primary-image">
-    <img src="{{ img.image.url }}" alt="{{ plant.common_name }}">
-</div>
-{% endif %}
-{% endfor %}
-
-<div class="content-section">
-    <h2 class="section-heading">Overview</h2>
-    <p>{{ plant.description }}</p>
-</div>
-
-<div class="content-section">
-    <h2 class="section-heading">Care & Cultivation</h2>
-
-    {% if plant.care %}
-    <div class="care-grid">
-        <div class="care-item"><strong>☀️ Light</strong>{{ plant.care.light_requirement }}</div>
-        <div class="care-item"><strong>💧 Watering</strong>{{ plant.care.watering_frequency }}</div>
-        <div class="care-item"><strong>🌱 Soil</strong>{{ plant.care.soil_type }}</div>
-        <div class="care-item"><strong>🌡️ Temperature</strong>{{ plant.care.temperature_range }}</div>
-        <div class="care-item">
-            <strong>🏡 Placement</strong>
-            {{ plant.care.get_indoor_outdoor_display }} · {{ plant.care.get_pot_or_ground_display }}
-        </div>
-    </div>
-
-    {% if plant.has_nursery %}
     <div class="content-section">
-        <h2 class="section-heading">Nursery Information</h2>
-
-        {% if plant.nursery.is_sellable %}
-            <p><strong>Status:</strong> 🌱 Available in nursery</p>
-        {% else %}
-            <p><strong>Status:</strong> ⏳ Not currently available</p>
-        {% endif %}
-
-        <ul>
-            <li>
-                <strong>Propagation:</strong>
-                {{ plant.nursery.propagation_method }}
-            </li>
-
-            {% if plant.nursery.grow_time_days %}
-            <li>
-                <strong>Grow Time:</strong>
-                {{ plant.nursery.grow_time_days }} days
-            </li>
-            {% endif %}
-
-            <li>
-                <strong>Difficulty:</strong>
-                {{ plant.nursery.difficulty|title }}
-            </li>
-        </ul>
-
-        {% if plant.nursery.nursery_notes %}
-            <p>{{ plant.nursery.nursery_notes }}</p>
-        {% endif %}
-
-        <p style="margin-top: 1rem; font-size: 0.9rem; color: #555;">
-            This plant is available through our nursery network.
-            Ordering and delivery options will be enabled soon.
-        </p>
-
-    <div class="nursery-actions">
-        <div class="nursery-action-row">
-            <button class="nursery-cta" disabled>
-                <span class="cta-icon">🛒</span>
-                <span class="cta-text">Coming Soon</span>
-            </button>
-            <form method="post"
-                action="{% url 'wishlist-add' plant.id %}"
-                class="wishlist-form">
-                {% csrf_token %}
-
-                {% if not user.is_authenticated %}
-                    <input
-                        type="email"
-                        name="email"
-                        placeholder="Email for wishlist"
-                        required
-                    >
-                {% endif %}
-
-                <button type="submit" class="wishlist-btn">
-                    ❤️ Add to Wishlist
-                </button>
-            </form>
-</div>
-    <form method="post"
-          action="{% url 'nursery-notify' plant.id %}"
-          class="notify-form">
-        {% csrf_token %}
-        <input
-            type="email"
-            name="email"
-            placeholder="Enter email for notification"
-            required
-        >
-        <button type="submit" class="notify-btn">
-            🔔 Notify when available
-        </button>
-    </form>
+        <h2 class="section-heading">Overview</h2>
+        <p>{{ plant.description }}</p>
     </div>
+
+{% include "plants/partials/_care.html" %}
+
+{% include "plants/partials/_nursery_info.html" %}
+
+{% include "plants/partials/_climate_matrix.html" %}
+
+    {% if plant.toxicity or plant.precautions %}
+    <div class="content-section">
+        <h2 class="section-heading">Safety & Precautions</h2>
+        {% if plant.toxicity %}<p><strong>Toxicity:</strong> {{ plant.toxicity }}</p>{% endif %}
+        {% if plant.precautions %}<p><strong>Precautions:</strong> {{ plant.precautions }}</p>{% endif %}
     </div>
     {% endif %}
 
-    {% if plant.care.beginner_mistakes %}
-        <h3 class="sub-heading">Common Beginner Mistakes</h3>
-        <p>{{ plant.care.beginner_mistakes }}</p>
-    {% endif %}
-    {% endif %}
-</div>
 
-<div class="content-section">
-    <h2 class="section-heading">Climate & Seasonal Adjustments</h2>
+        {% include "plants/partials/_recommendations.html" %}
 
-    {% if plant.care and plant.care.climate_overrides.all %}
-    {% regroup plant.care.climate_overrides.all by climate_zone as climate_groups %}
-
-    {% for group in climate_groups %}
-        <div class="climate-matrix">
-            <div class="climate-title">{{ group.grouper|title }} Climate</div>
-
-            <div class="season-grid">
-
-                <!-- SUMMER -->
-                <div class="season-cell">
-                    <div class="season-name">Summer</div>
-                    {% for rule in group.list %}
-                        {% if rule.season == "summer" %}
-                            <div class="season-content">
-                                <p><strong>💧 Watering</strong><br>{{ rule.watering_adjustment }}</p>
-                                {% if rule.sunlight_adjustment %}
-                                <p><strong>☀️ Sunlight</strong><br>{{ rule.sunlight_adjustment }}</p>
-                                {% endif %}
-                                {% if rule.special_notes %}
-                                <p class="season-note">
-                                    <strong>📝 Season Note</strong><br>
-                                    {{ rule.special_notes }}
-                                </p>
-                                {% endif %}
-                            </div>
-                        {% endif %}
-                    {% endfor %}
-                </div>
-
-                <!-- MONSOON -->
-                <div class="season-cell">
-                    <div class="season-name">Monsoon</div>
-                    {% for rule in group.list %}
-                        {% if rule.season == "monsoon" %}
-                            <div class="season-content">
-                                <p><strong>💧 Watering</strong><br>{{ rule.watering_adjustment }}</p>
-                                {% if rule.sunlight_adjustment %}
-                                <p><strong>☀️ Sunlight</strong><br>{{ rule.sunlight_adjustment }}</p>
-                                {% endif %}
-                                {% if rule.special_notes %}
-                                <p class="season-note">
-                                    <strong>📝 Season Note</strong><br>
-                                    {{ rule.special_notes }}
-                                </p>
-                                {% endif %}
-                            </div>
-                        {% endif %}
-                    {% endfor %}
-                </div>
-
-                <!-- WINTER -->
-                <div class="season-cell">
-                    <div class="season-name">Winter</div>
-                    {% for rule in group.list %}
-                        {% if rule.season == "winter" %}
-                            <div class="season-content">
-                                <p><strong>💧 Watering</strong><br>{{ rule.watering_adjustment }}</p>
-                                {% if rule.sunlight_adjustment %}
-                                <p><strong>☀️ Sunlight</strong><br>{{ rule.sunlight_adjustment }}</p>
-                                {% endif %}
-                                {% if rule.special_notes %}
-                                <p class="season-note">
-                                    <strong>📝 Season Note</strong><br>
-                                    {{ rule.special_notes }}
-                                </p>
-                                {% endif %}
-                            </div>
-                        {% endif %}
-                    {% endfor %}
-                </div>
-
-            </div>
-        </div>
-    {% endfor %}
-    {% else %}
-        <p class="placeholder">Climate-specific guidance will be added soon.</p>
-    {% endif %}
-</div>
-
-{% if plant.toxicity or plant.precautions %}
-<div class="content-section">
-    <h2 class="section-heading">Safety & Precautions</h2>
-    {% if plant.toxicity %}<p><strong>Toxicity:</strong> {{ plant.toxicity }}</p>{% endif %}
-    {% if plant.precautions %}<p><strong>Precautions:</strong> {{ plant.precautions }}</p>{% endif %}
-</div>
-{% endif %}
 
 </div>
 

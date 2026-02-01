@@ -1,0 +1,44 @@
+<div class="content-section">
+    <h2 class="section-heading">Care & Cultivation</h2>
+
+    {% if plant.care %}
+        <div class="care-grid">
+            <div class="care-item">
+                <strong>☀️ Light</strong>
+                {{ plant.care.light_requirement }}
+            </div>
+
+            <div class="care-item">
+                <strong>💧 Watering</strong>
+                {{ plant.care.watering_frequency }}
+            </div>
+
+            <div class="care-item">
+                <strong>🌱 Soil</strong>
+                {{ plant.care.soil_type }}
+            </div>
+
+            <div class="care-item">
+                <strong>🌡️ Temperature</strong>
+                {{ plant.care.temperature_range }}
+            </div>
+
+            <div class="care-item">
+                <strong>🏡 Placement</strong>
+                {{ plant.care.get_indoor_outdoor_display }}
+                ·
+                {{ plant.care.get_pot_or_ground_display }}
+            </div>
+        </div>
+
+        {% if plant.care.beginner_mistakes %}
+            <h3 class="sub-heading">Common Beginner Mistakes</h3>
+            <p>{{ plant.care.beginner_mistakes }}</p>
+        {% endif %}
+
+    {% else %}
+        <p class="placeholder">
+            Detailed care information will be added soon.
+        </p>
+    {% endif %}
+</div>

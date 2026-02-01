@@ -1,14 +1,14 @@
 from django.shortcuts import get_object_or_404, redirect
 from django.contrib import messages
 from plants.models import Plant
-from .models import StockNotification
-from .models import Wishlist
+from .models import StockNotification, Wishlist
+
 
 def notify_when_available(request, plant_id):
+    plant = get_object_or_404(Plant, id=plant_id)
+
     if request.method == "POST":
         email = request.POST.get("email")
-
-        plant = get_object_or_404(Plant, id=plant_id)
 
         StockNotification.objects.get_or_create(
             plant=plant,
@@ -20,8 +20,8 @@ def notify_when_available(request, plant_id):
             "You'll be notified when this plant is available 🌱"
         )
 
-    return redirect("plant-detail", slug=plant.slug)
-
+    # ✅ FIXED redirect
+    return redirect("plants:plant_detail", slug=plant.slug)
 
 
 def add_to_wishlist(request, plant_id):
@@ -36,7 +36,7 @@ def add_to_wishlist(request, plant_id):
         email = request.POST.get("email")
         if not email:
             messages.error(request, "Please enter an email to save wishlist.")
-            return redirect(request.META.get("HTTP_REFERER", "/"))
+            return redirect("plants:plant_detail", slug=plant.slug)
 
         Wishlist.objects.get_or_create(
             email=email,
@@ -44,4 +44,6 @@ def add_to_wishlist(request, plant_id):
         )
 
     messages.success(request, "❤️ Added to your wishlist!")
-    return redirect(request.META.get("HTTP_REFERER", "/"))
+
+    # (Optional but cleaner than HTTP_REFERER)
+    return redirect("plants:plant_detail", slug=plant.slug)

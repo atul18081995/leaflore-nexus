@@ -1,0 +1,48 @@
+<div class="nursery-actions">
+
+    <!-- COMING SOON (always single row) -->
+    <div class="nursery-cta-row">
+        <button class="nursery-cta" disabled>
+            🛒 Coming Soon
+        </button>
+    </div>
+
+    <!-- WISHLIST -->
+    <form method="post"
+          action="{% url 'nursery:wishlist_add' plant.id %}"
+          class="action-form">
+        {% csrf_token %}
+
+        {% if not user.is_authenticated %}
+        <input
+            type="email"
+            name="email"
+            placeholder="Email for wishlist"
+            required
+        >
+        {% endif %}
+
+        <button type="submit" class="wishlist-btn">
+            ❤️ Add to Wishlist
+        </button>
+    </form>
+
+    <!-- NOTIFY -->
+    <form method="post"
+          action="{% url 'nursery:notify' plant.id %}"
+          class="action-form">
+        {% csrf_token %}
+
+        <input
+            type="email"
+            name="email"
+            placeholder="Email for notification"
+            required
+        >
+
+        <button type="submit" class="notify-btn">
+            🔔 Notify when available
+        </button>
+    </form>
+
+</div>

@@ -12,9 +12,12 @@ class Plant(models.Model):
     # -----------------
     common_name = models.CharField(max_length=200, db_index=True)
     scientific_name = models.CharField(max_length=200, unique=True)
+
     slug = models.SlugField(
         max_length=220,
         unique=True,
+        blank=True,        # ✅ REQUIRED
+        null=True,         # ✅ REQUIRED
         help_text="URL-friendly unique identifier"
     )
 
@@ -112,14 +115,32 @@ class Plant(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
+    # -----------------
+    # Save override (CRITICAL FIX)
+    # -----------------
     def save(self, *args, **kwargs):
         if not self.slug:
-            self.slug = slugify(self.scientific_name)
+            base_slug = slugify(self.scientific_name)
+            slug = base_slug
+            counter = 1
+
+            # ✅ Prevent slug collision
+            while Plant.objects.filter(slug=slug).exclude(pk=self.pk).exists():
+                slug = f"{base_slug}-{counter}"
+                counter += 1
+
+            self.slug = slug
+
         super().save(*args, **kwargs)
 
     @property
     def has_nursery(self):
-        return hasattr(self, "nursery")
+        try:
+            self.nursery
+            return True
+        except Exception:
+            return False
+
     class Meta:
         ordering = ["common_name"]
 
@@ -131,11 +152,13 @@ class Plant(models.Model):
 # Plant Images
 # =====================================================
 class PlantImage(models.Model):
+
     plant = models.ForeignKey(
         Plant,
         on_delete=models.CASCADE,
         related_name="images"
     )
+
     image = models.ImageField(upload_to="plants/gallery/")
     caption = models.CharField(max_length=255, blank=True)
     is_primary = models.BooleanField(default=False)
@@ -153,7 +176,6 @@ class PlantImage(models.Model):
 # =====================================================
 class PlantCareProfile(models.Model):
 
-    # ✅ NEW: controlled choices (THIS FIXES YOUR ISSUE)
     INDOOR_OUTDOOR_CHOICES = [
         ("indoor", "Indoor"),
         ("outdoor", "Outdoor"),
@@ -185,9 +207,7 @@ class PlantCareProfile(models.Model):
     temperature_range = models.CharField(max_length=50)
     humidity_preference = models.CharField(max_length=50, blank=True)
 
-    # -----------------
-    # Placement (FIXED)
-    # -----------------
+    # Placement
     indoor_outdoor = models.CharField(
         max_length=20,
         choices=INDOOR_OUTDOOR_CHOICES

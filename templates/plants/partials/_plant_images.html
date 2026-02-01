@@ -1,0 +1,7 @@
+{% for img in plant.images.all %}
+    {% if img.is_primary %}
+    <div class="primary-image">
+        <img src="{{ img.image.url }}" alt="{{ plant.common_name }}">
+    </div>
+    {% endif %}
+{% endfor %}

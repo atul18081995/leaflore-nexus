@@ -1,0 +1,62 @@
+{% if available_recommendations or unavailable_recommendations or knowledge_recommendations %}
+<div class="content-section recommendation-section">
+
+    <h2 class="section-heading">
+        🌱 More Plants Recommendations
+    </h2>
+
+    <p class="recommendation-hint">
+        {{ recommendation_reason|default:"You may also be interested in these plants." }}
+    </p>
+
+    <div class="recommendation-grid">
+
+        {# 1️⃣ Nursery available plants FIRST #}
+        {% for plant in available_recommendations %}
+        <div class="recommendation-card">
+
+            <strong class="rec-name">{{ plant.common_name }}</strong>
+            <em class="rec-scientific">{{ plant.scientific_name }}</em>
+
+            <span class="rec-tag available">🌱 Available</span>
+
+            <a href="{% url 'plants:plant_detail' plant.slug %}" class="rec-link">
+                View →
+            </a>
+        </div>
+        {% endfor %}
+
+        {# 2️⃣ Similar but coming soon #}
+        {% for plant in unavailable_recommendations %}
+        <div class="recommendation-card">
+
+            <strong class="rec-name">{{ plant.common_name }}</strong>
+            <em class="rec-scientific">{{ plant.scientific_name }}</em>
+
+            <span class="rec-tag coming-soon">⏳ Coming Soon</span>
+
+            <a href="{% url 'plants:plant_detail' plant.slug %}" class="rec-link">
+                View →
+            </a>
+        </div>
+        {% endfor %}
+
+        {# 3️⃣ Knowledge-only plants LAST #}
+        {% for plant in knowledge_recommendations %}
+        <div class="recommendation-card">
+
+            <strong class="rec-name">{{ plant.common_name }}</strong>
+            <em class="rec-scientific">{{ plant.scientific_name }}</em>
+
+            <span class="rec-tag knowledge">📘 Knowledge only</span>
+
+            <a href="{% url 'plants:plant_detail' plant.slug %}" class="rec-link">
+                View →
+            </a>
+        </div>
+        {% endfor %}
+
+    </div>
+
+</div>
+{% endif %}

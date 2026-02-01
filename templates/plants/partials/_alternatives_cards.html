@@ -1,0 +1,23 @@
+{% for plant in items %}
+<div class="alt-card">
+
+    <h4 class="alt-name">{{ plant.common_name }}</h4>
+    <em class="alt-scientific">{{ plant.scientific_name }}</em>
+
+    {% if plant.has_nursery %}
+        {% if plant.nursery.is_sellable %}
+            <span class="badge badge-available">🌱 Available</span>
+        {% else %}
+            <span class="badge badge-soon">⏳ Coming Soon</span>
+        {% endif %}
+    {% else %}
+        <span class="badge badge-knowledge">📘 Knowledge only</span>
+    {% endif %}
+
+    <a href="{% url 'plants:plant_detail' plant.slug %}"
+       class="alt-link">
+        View →
+    </a>
+
+</div>
+{% endfor %}

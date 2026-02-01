@@ -1,0 +1,93 @@
+<div class="content-section">
+    <h2 class="section-heading">Climate & Seasonal Adjustments</h2>
+
+    {% if plant.care and plant.care.climate_overrides.all %}
+        {% regroup plant.care.climate_overrides.all by climate_zone as climate_groups %}
+
+        {% for group in climate_groups %}
+            <div class="climate-matrix">
+                <div class="climate-title">
+                    {{ group.grouper|title }} Climate
+                </div>
+
+                <div class="season-grid">
+
+                    <!-- SUMMER -->
+                    <div class="season-cell">
+                        <div class="season-name">Summer</div>
+                        {% for rule in group.list %}
+                            {% if rule.season == "summer" %}
+                                <p><strong>💧 Watering</strong><br>
+                                   {{ rule.watering_adjustment }}</p>
+
+                                {% if rule.sunlight_adjustment %}
+                                    <p><strong>☀️ Sunlight</strong><br>
+                                       {{ rule.sunlight_adjustment }}</p>
+                                {% endif %}
+
+                                {% if rule.special_notes %}
+                                    <p class="season-note">
+                                        <strong>📝 Season Note</strong><br>
+                                        {{ rule.special_notes }}
+                                    </p>
+                                {% endif %}
+                            {% endif %}
+                        {% endfor %}
+                    </div>
+
+                    <!-- MONSOON -->
+                    <div class="season-cell">
+                        <div class="season-name">Monsoon</div>
+                        {% for rule in group.list %}
+                            {% if rule.season == "monsoon" %}
+                                <p><strong>💧 Watering</strong><br>
+                                   {{ rule.watering_adjustment }}</p>
+
+                                {% if rule.sunlight_adjustment %}
+                                    <p><strong>☀️ Sunlight</strong><br>
+                                       {{ rule.sunlight_adjustment }}</p>
+                                {% endif %}
+
+                                {% if rule.special_notes %}
+                                    <p class="season-note">
+                                        <strong>📝 Season Note</strong><br>
+                                        {{ rule.special_notes }}
+                                    </p>
+                                {% endif %}
+                            {% endif %}
+                        {% endfor %}
+                    </div>
+
+                    <!-- WINTER -->
+                    <div class="season-cell">
+                        <div class="season-name">Winter</div>
+                        {% for rule in group.list %}
+                            {% if rule.season == "winter" %}
+                                <p><strong>💧 Watering</strong><br>
+                                   {{ rule.watering_adjustment }}</p>
+
+                                {% if rule.sunlight_adjustment %}
+                                    <p><strong>☀️ Sunlight</strong><br>
+                                       {{ rule.sunlight_adjustment }}</p>
+                                {% endif %}
+
+                                {% if rule.special_notes %}
+                                    <p class="season-note">
+                                        <strong>📝 Season Note</strong><br>
+                                        {{ rule.special_notes }}
+                                    </p>
+                                {% endif %}
+                            {% endif %}
+                        {% endfor %}
+                    </div>
+
+                </div>
+            </div>
+        {% endfor %}
+
+    {% else %}
+        <p class="placeholder">
+            Climate-specific guidance will be added soon.
+        </p>
+    {% endif %}
+</div>

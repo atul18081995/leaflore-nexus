@@ -1,0 +1,28 @@
+{% if plants %}
+<div class="alternatives-grid">
+
+    {% for plant in plants %}
+    <div class="alt-card">
+
+        <h4 class="alt-name">{{ plant.common_name }}</h4>
+        <em class="alt-scientific">{{ plant.scientific_name }}</em>
+
+        {% if plant.nursery %}
+            {% if plant.nursery.is_sellable %}
+                <span class="alt-tag available">🌱 Available</span>
+            {% else %}
+                <span class="alt-tag coming-soon">⏳ Coming Soon</span>
+            {% endif %}
+        {% else %}
+            <span class="alt-tag knowledge">📘 Knowledge only</span>
+        {% endif %}
+
+        <a href="{% url 'plants:plant_detail' plant.slug %}" class="alt-link">
+            View →
+        </a>
+
+    </div>
+    {% endfor %}
+
+</div>
+{% endif %}

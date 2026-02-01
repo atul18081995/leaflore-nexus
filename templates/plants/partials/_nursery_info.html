@@ -1,0 +1,83 @@
+{% if nursery %}
+<div class="content-section">
+
+    <h2 class="section-heading">Nursery Information</h2>
+
+    {% if nursery.is_sellable %}
+        <p><strong>Status:</strong> 🌱 Available in nursery</p>
+    {% else %}
+        <p><strong>Status:</strong> ⏳ Not currently available</p>
+    {% endif %}
+
+    <ul>
+        <li><strong>Propagation:</strong> {{ nursery.propagation_method }}</li>
+
+        {% if nursery.grow_time_days %}
+            <li><strong>Grow Time:</strong> {{ nursery.grow_time_days }} days</li>
+        {% endif %}
+
+        <li><strong>Difficulty:</strong> {{ nursery.difficulty|title }}</li>
+    </ul>
+
+    {% if nursery.nursery_notes %}
+        <p class="nursery-notes">{{ nursery.nursery_notes }}</p>
+    {% endif %}
+
+    {# ---------------- Nursery Actions ---------------- #}
+    {% include "plants/partials/_nursery_actions.html" %}
+
+    {# ---------------- Nursery Alternatives ---------------- #}
+    {% if nursery_recommendations %}
+    <div class="nursery-alternatives">
+
+        <h3 class="sub-heading">
+            {% if nursery.is_sellable %}
+                You may also like
+            {% else %}
+                Recommended alternatives
+            {% endif %}
+        </h3>
+
+        <p class="nursery-alt-hint">
+            {% if nursery.is_sellable %}
+                You can also purchase these similar plants from our nursery.
+            {% else %}
+                Since this plant is currently unavailable, you can consider these alternatives.
+            {% endif %}
+        </p>
+
+        <div class="alternative-wrapper">
+            <div class="alternative-dotted">
+
+                {% for plant in nursery_recommendations %}
+                <div class="alternative-card">
+
+                    <strong class="alt-title">{{ plant.common_name }}</strong>
+                    <div class="alt-scientific">{{ plant.scientific_name }}</div>
+
+                    {% if plant.nursery %}
+                        {% if plant.nursery.is_sellable %}
+                            <div class="alt-tag">🌱 Available</div>
+                        {% else %}
+                            <div class="alt-tag">⏳ Coming Soon</div>
+                        {% endif %}
+                    {% else %}
+                        <div class="alt-tag">📘 Knowledge only</div>
+                    {% endif %}
+
+                    <a href="{% url 'plants:plant_detail' plant.slug %}"
+                       class="alt-view-link">
+                        View →
+                    </a>
+
+                </div>
+                {% endfor %}
+
+            </div>
+        </div>
+
+    </div>
+    {% endif %}
+
+</div>
+{% endif %}

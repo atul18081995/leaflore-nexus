@@ -1,0 +1,18 @@
+<div class="recommendation-card">
+
+    <strong class="rec-name">{{ plant.common_name }}</strong>
+    <em class="rec-scientific">{{ plant.scientific_name }}</em>
+
+    {% if tag == "available" %}
+        <span class="rec-tag available">🌱 Available</span>
+    {% elif tag == "soon" %}
+        <span class="rec-tag coming-soon">⏳ Coming Soon</span>
+    {% else %}
+        <span class="rec-tag knowledge">📘 Knowledge only</span>
+    {% endif %}
+
+    <a href="{% url 'plants:plant_detail' plant.slug %}" class="rec-link">
+        View →
+    </a>
+
+</div>

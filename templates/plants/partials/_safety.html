@@ -1,0 +1,7 @@
+{% if plant.toxicity or plant.precautions %}
+<div class="content-section">
+    <h2 class="section-heading">Safety & Precautions</h2>
+    {% if plant.toxicity %}<p><strong>Toxicity:</strong> {{ plant.toxicity }}</p>{% endif %}
+    {% if plant.precautions %}<p><strong>Precautions:</strong> {{ plant.precautions }}</p>{% endif %}
+</div>
+{% endif %}

@@ -1,0 +1,25 @@
+<!-- WISHLIST -->
+<form method="post" action="{% url 'nursery:wishlist_add' plant.id %}">
+    {% csrf_token %}
+    {% if not user.is_authenticated %}
+        <input
+            type="email"
+            name="email"
+            placeholder="Email for wishlist"
+            required
+        >
+    {% endif %}
+    <button class="wishlist-btn">❤️ Add to Wishlist</button>
+</form>
+
+<!-- NOTIFY -->
+<form method="post" action="{% url 'nursery:notify' plant.id %}">
+    {% csrf_token %}
+    <input
+        type="email"
+        name="email"
+        placeholder="Notify when available"
+        required
+    >
+    <button class="notify-btn">🔔 Notify Me</button>
+</form>

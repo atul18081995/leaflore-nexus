@@ -1,7 +1,17 @@
 from django.urls import path
-from .views import plant_list_view, plant_detail_view
+from . import views
+
+app_name = "plants"   # <-- KEEP THIS
 
 urlpatterns = [
-    path("", plant_list_view, name="plant-list"),
-    path("<slug:slug>/", plant_detail_view, name="plant-detail"),
+    path(
+        "",
+        views.plant_list_view,
+        name="plant_list",
+    ),
+    path(
+        "<slug:slug>/",
+        views.plant_detail_view,
+        name="plant_detail",
+    ),
 ]
