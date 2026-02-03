@@ -1,0 +1,12 @@
+{% extends "base/base.html" %}
+
+{% block page_css %}
+<link rel="stylesheet" href="{% static 'css/plant_list.css' %}">
+{% endblock %}
+
+{% block content %}
+{% include "home/_hero.html" %}
+{% include "home/_featured_plants.html" %}
+{% include "home/_categories.html" %}
+{% include "home/_cta.html" %}
+{% endblock %}
