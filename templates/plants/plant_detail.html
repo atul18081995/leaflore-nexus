@@ -1,19 +1,18 @@
+{% extends "base/base.html" %}
 {% load static %}
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>{{ plant.common_name }} | LeafLore Nexus</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <link rel="stylesheet" href="{% static 'css/base.css' %}">
-    <link rel="stylesheet" href="{% static 'css/plant_detail.css' %}">
-    <link rel="stylesheet" href="{% static 'css/nursery.css' %}">
-    <link rel="stylesheet" href="{% static 'css/recommendations.css' %}">
-    <link rel="stylesheet" href="{% static 'css/climate.css' %}">
-</head>
+{% block title %}
+{{ plant.common_name }} | LeafLore Nexus
+{% endblock %}
 
-<body>
+{% block page_css %}
+<link rel="stylesheet" href="{% static 'css/plant_detail.css' %}">
+<link rel="stylesheet" href="{% static 'css/nursery.css' %}">
+<link rel="stylesheet" href="{% static 'css/recommendations.css' %}">
+<link rel="stylesheet" href="{% static 'css/climate.css' %}">
+{% endblock %}
+
+{% block content %}
 
 <a href="/plants/">← Back to plants</a>
 
@@ -22,7 +21,9 @@
     {% include "plants/partials/_messages.html" %}
 
     <h1>{{ plant.common_name }}</h1>
-    <div class="meta"><em>{{ plant.scientific_name }}</em></div>
+    <div class="meta">
+        <em>{{ plant.scientific_name }}</em>
+    </div>
 
     {% if primary_image %}
         <div class="primary-image">
@@ -38,5 +39,4 @@
 
 </div>
 
-</body>
-</html>
+{% endblock %}

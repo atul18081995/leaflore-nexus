@@ -1,0 +1,40 @@
+<div class="plant-card">
+
+    {% if plant.primary_image %}
+        <div class="plant-image">
+            <img src="{{ plant.primary_image.url }}" alt="{{ plant.common_name }}">
+        </div>
+    {% endif %}
+
+    <div class="plant-content">
+
+        <h2 class="plant-title">
+            <a href="{% url 'plants:plant_detail' plant.slug %}">
+                {{ plant.common_name }}
+            </a>
+        </h2>
+
+        <div class="plant-scientific">
+            {{ plant.scientific_name }}
+        </div>
+
+        {% if plant.has_nursery %}
+            {% if plant.nursery.is_sellable %}
+                <span class="nursery-badge available">
+                    🌱 Available in Nursery
+                </span>
+            {% else %}
+                <span class="nursery-badge coming-soon">
+                    ⏳ Nursery (Coming Soon)
+                </span>
+            {% endif %}
+        {% endif %}
+
+        {% if plant.description %}
+            <div class="plant-description">
+                {{ plant.description|truncatewords:18 }}
+            </div>
+        {% endif %}
+
+    </div>
+</div>      

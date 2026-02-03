@@ -1,98 +1,54 @@
-<!DOCTYPE html>
-<html lang="en">
+{% extends "base/base.html" %}
 {% load static %}
-<head>
-    <meta charset="UTF-8">
-    <title>Plant Knowledge Base | LeafLore Nexus</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <meta name="description" content="Explore a growing plant knowledge base with care tips, growth habits, uses, and cultivation insights — tailored for Indian climates.">
-    <link rel="canonical" href="{{ request.build_absolute_uri }}">
+{% block title %}
+Plant Knowledge Base | LeafLore Nexus
+{% endblock %}
 
-    <link rel="stylesheet" href="{% static 'css/base.css' %}">
-    <link rel="stylesheet" href="{% static 'css/plant_list.css' %}">
-</head>
-<body>
+{% block page_css %}
+<link rel="stylesheet" href="{% static 'css/plant_list.css' %}">
+{% endblock %}
+
+{% block content %}
 
 <div class="page-container">
 
-<h1>🌿 Plant Knowledge Base</h1>
+    <div class="plant-list-header">
 
-<p class="intro">
-    A growing knowledge base of plants — covering care, growth,
-    uses, and cultivation insights.
-</p>
+        <h1>🌿 Plant Knowledge Base</h1>
 
-<!-- SEARCH -->
-<form method="get">
-    <input
-        type="search"
-        name="q"
-        placeholder="Search plants (name, family, genus...)"
-        value="{{ query }}"
-    >
-</form>
+        <p class="intro">
+            A growing knowledge base of plants — covering care, growth,
+            uses, and cultivation insights.
+        </p>
 
-{% if query %}
-    <a class="clear-search" href="/plants/">← Back to all plants</a>
-{% endif %}
+        <form method="get" class="plant-search">
+            <input
+                type="search"
+                name="q"
+                placeholder="Search plants (name, family, genus...)"
+                value="{{ query }}"
+            >
+        </form>
 
-<!-- PLANT GRID -->
-{% if plants|length > 0 %}
-<div class="plant-grid">
-    {% for plant in plants %}
-        <div class="plant-card">
+        {% if query %}
+            <a class="clear-search" href="{% url 'plants:plant_list' %}">
+                ← Back to all plants
+            </a>
+        {% endif %}
 
-            {% if plant.primary_image %}
-                <div class="plant-image">
-                    <img src="{{ plant.primary_image.url }}" alt="{{ plant.common_name }}">
-                </div>
-            {% endif %}
+    </div>
 
-            <div class="plant-content">
-                <h2>
-                    <a href="{% url 'plants:plant_detail' plant.slug %}">
-                        {{ plant.common_name }}
-                    </a>
-                </h2>
-
-                <div class="scientific">
-                    {{ plant.scientific_name }}
-                </div>
-
-                {% if plant.has_nursery%}
-                    {% if plant.nursery.is_sellable %}
-                        <span class="nursery-badge available">
-                            🌱 Available in Nursery
-                        </span>
-                    {% else %}
-                        <span class="nursery-badge coming-soon">
-                            ⏳ Nursery (Coming Soon)
-                        </span>
-                    {% endif %}
-                {% endif %}
-
-                <div class="description">
-                    {{ plant.description|truncatewords:20 }}
-                </div>
-            </div>
-
+    {% if plants %}
+        <div class="plant-grid">
+            {% for plant in plants %}
+                {% include "plants/partials/_plant_card.html" %}
+            {% endfor %}
         </div>
-    {% endfor %}
-</div>
-{% else %}
-    {% if query %}
-        <p class="no-results">
-            ❌ No plants found for "<strong>{{ query }}</strong>"
-        </p>
     {% else %}
-        <p class="no-results">
-            No published plants available.
-        </p>
+        <p class="no-results">No plants available.</p>
     {% endif %}
-{% endif %}
 
 </div>
 
-</body>
-</html>
+{% endblock %}
